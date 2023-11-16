@@ -6,15 +6,15 @@ use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
 use App\Models\RequestTemplate;
+use App\Models\InputDetailRequest;
+use App\Models\User;
 class RequestTemplateController extends Controller
 {
     public function index()
     {
-        // Hiển thị danh sách các request templates
         $templates = RequestTemplate::all();
-        // return view('templates.index', compact('templates'));
+        
         return Inertia::render('Requests/Request_templates', compact('templates'));
-
     }
 
     public function create(Request $request)
@@ -43,9 +43,23 @@ class RequestTemplateController extends Controller
         // Trang chỉnh sửa request template
         $template = RequestTemplate::findOrFail($id);
         
-        return Inertia::render('Requests/Detail_request_template', compact('template'));
-    }
+        $inputDetails = InputDetailRequest::where('id_request_templates', $id)->get();
+        
+        $allLeaderAdmin = User::where('role', '1')->orWhere('role', '99')->get();
 
+        return Inertia::render('Requests/Detail_request_template', compact('template','inputDetails','allLeaderAdmin'));
+    }
+    public function updateField(Request $request, $id)
+    {
+      
+        $template = RequestTemplate::findOrFail($id);
+        $field = $request->input('field');
+        $value = $request->input('value');
+        $template->$field = $value;
+        $template->save();
+        // return response()->json(['success' => true]);
+         return redirect()->route('Detail_request_template',$id)->with('success', 'Request Template field updated successfully');
+    }
     public function update(Request $request, $id)
     {
         // Cập nhật request template

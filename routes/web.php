@@ -5,7 +5,9 @@ use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\Requests\InputDetailController;
 use App\Http\Controllers\Requests\RequestTemplateController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -17,14 +19,6 @@ use App\Http\Controllers\Requests\RequestTemplateController;
 |
 */
 
-// Route::get('/', function () {
-//     return Inertia::render('Welcome', [
-//         'canLogin' => Route::has('login'),
-//         'canRegister' => Route::has('register'),
-//         'laravelVersion' => Application::VERSION,
-//         'phpVersion' => PHP_VERSION,
-//     ]);
-// });
 Route::middleware(['auth'])->group(function () {
     // User Managerment
     Route::get('/', function () {
@@ -44,7 +38,13 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/create', [RequestTemplateController::class, 'create'])->name('Create_Request_template');
         Route::get('/{id}', [RequestTemplateController::class, 'edit'])->name('Detail_request_template');
         Route::put('/{id}', [RequestTemplateController::class, 'update'])->name('Update_request_template');
+        Route::post('/{id}/update', [RequestTemplateController::class, 'updateField'])->name('Update_field_request_template');
         Route::post('/{id}', [RequestTemplateController::class, 'destroy'])->name('Delete_request_template');
+        // Input detail routes
+        
+        Route::post('/{id}/input-details/create', [InputDetailController::class, 'create'])->name('Create_input_detail');
+        Route::put('/{id}/input-details/{input_id}', [InputDetailController::class, 'update'])->name('Update_input_detail');
+        Route::post('/{id}/input-details/{input_id}', [InputDetailController::class, 'delete'])->name('Delete_input_detail');
     });
 
     // Request Managerment
