@@ -7,7 +7,8 @@ use Inertia\Inertia;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\Requests\InputDetailController;
 use App\Http\Controllers\Requests\RequestTemplateController;
-
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\Requests\UserRequestController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -21,9 +22,7 @@ use App\Http\Controllers\Requests\RequestTemplateController;
 
 Route::middleware(['auth'])->group(function () {
     // User Managerment
-    Route::get('/', function () {
-        return Inertia::render('Dashboard');
-    })->middleware(['auth', 'verified'])->name('dashboard');
+    Route::get('/', [DashboardController::class,'index'])->middleware(['auth', 'verified'])->name('dashboard');
 
     Route::prefix('/users')->group(function () {
         Route::get('/', [UserController::class, 'index'])->name('Users');
@@ -47,13 +46,13 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/{id}/input-details/{input_id}', [InputDetailController::class, 'delete'])->name('Delete_input_detail');
     });
 
-    // Request Managerment
-    Route::prefix('/requests')->group(function () {
-        Route::get('/', [UserController::class, 'index'])->name('Requests');
-        Route::get('/detail/{id}', [UserController::class, 'view'])->name('Detail_Request');
-        Route::post('/update/{id}', [UserController::class, 'update'])->name('Update_Request');
-        Route::get('/delete/{id}', [UserController::class, 'delete'])->name('Delete_Request');
-        Route::post('/create', [UserController::class, 'create'])->name('Create_Request');
+    // User Request routes
+    Route::prefix('/user_requests')->group(function () {
+        // Route::get('/', [UserRequestController::class, 'index'])->name('Requests');
+        // Route::get('/detail/{id}', [UserRequestController::class, 'view'])->name('Detail_Request');
+        // Route::post('/update/{id}', [UserRequestController::class, 'update'])->name('Update_Request');
+        // Route::get('/delete/{id}', [UserRequestController::class, 'delete'])->name('Delete_Request');
+        Route::get('/create', [UserRequestController::class, 'add_new_request_form'])->name('Create_User_Request');
     });
 });
 

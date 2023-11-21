@@ -144,6 +144,7 @@ export default function Detail_template_request({ auth,template, inputDetails ,a
                               <SelectInput
                                 id="required_input"
                                 name="required"
+                                required
                                 value={data.required}
                                 placeholder= "Có bắt buộc không? *"
                                 onChange={(value_of_select) => setData('required',value_of_select) }

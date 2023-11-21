@@ -176,20 +176,18 @@ return (
                                     <td className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">{user.name}</td>
                                     <td className="whitespace-nowrap px-4 py-2 text-gray-700">{user.email}</td>
                                     <td>
-                                        <p className="font-bold">
+                                        <p className="">
                                             {
                                                 (user.role == 1)?
                                                 <span
                                                 className="whitespace-nowrap rounded-full bg-purple-100 px-2.5 py-0.5 text-sm text-purple-700"
-                                                >
-                                                Leader</span>
+                                                > Leader</span>
                                                 :user.role == 0?
-                                                <span
-                                                className="whitespace-nowrap rounded-full bg-black px-2.5 py-0.5 text-sm text-white"
+                                                <span className="whitespace-nowrap rounded-full bg-black px-2.5 py-0.5 text-sm text-white"
                                                 >  Member</span>
                                                 :user.role == 99?
                                                 <span
-                                                className="whitespace-nowrap rounded-full bg-green-100 px-2.5 py-0.5 text-sm text-green-700"
+                                                className="bg-gradient-to-br from-fuchsia-500 to-voilet-500 text-white text-xs font-semibold mr-2 px-2.5 py-1 rounded"
                                                 >Admin</span>
                                                 :'Unknown'
                                             }

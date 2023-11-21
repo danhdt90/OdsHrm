@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class RequestTemplate extends Model
 {
     use HasFactory;
+    protected $table = 'request_templates';
+    
     protected $fillable = [
         'template_name',
         'request_form',
