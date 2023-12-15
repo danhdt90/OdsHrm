@@ -40,7 +40,7 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/{id}/update', [RequestTemplateController::class, 'updateField'])->name('Update_field_request_template');
         Route::post('/{id}', [RequestTemplateController::class, 'destroy'])->name('Delete_request_template');
         // Input detail routes
-        
+
         Route::post('/{id}/input-details/create', [InputDetailController::class, 'create'])->name('Create_input_detail');
         Route::put('/{id}/input-details/{input_id}', [InputDetailController::class, 'update'])->name('Update_input_detail');
         Route::post('/{id}/input-details/{input_id}', [InputDetailController::class, 'delete'])->name('Delete_input_detail');
@@ -48,7 +48,7 @@ Route::middleware(['auth'])->group(function () {
 
     // User Request routes
     Route::prefix('/user_requests')->group(function () {
-        // Route::get('/', [UserRequestController::class, 'index'])->name('Requests');
+        Route::get('/', [UserRequestController::class, 'index'])->name('Requests');
         // Route::get('/detail/{id}', [UserRequestController::class, 'view'])->name('Detail_Request');
         // Route::post('/update/{id}', [UserRequestController::class, 'update'])->name('Update_Request');
         // Route::get('/delete/{id}', [UserRequestController::class, 'delete'])->name('Delete_Request');

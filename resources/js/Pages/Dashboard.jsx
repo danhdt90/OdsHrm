@@ -39,7 +39,6 @@ export default function Dashboard({ auth ,allTemplate }) {
                             {auth.user.role == 0 && (
                                 <div>
                                     <h3>Tạo đề xuất</h3>
-                                    
                                 </div>
                             )}
                             <PrimaryButton onClick={openModal}>Thêm Đề xuất</PrimaryButton>

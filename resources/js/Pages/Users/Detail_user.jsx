@@ -16,9 +16,9 @@ export default function Detail_user({user,allLeaderAdmin, auth}) {
           },
       });
     }
-    const { 
+    const {
       data, setData, errors, post, reset, processing ,progress
-    } = 
+    } =
     useForm({
       name: user.name,
       avatar: user.avatar,
@@ -47,8 +47,8 @@ export default function Detail_user({user,allLeaderAdmin, auth}) {
                           </div>
                           <label className="block">
                             <span className="sr-only">Choose profile photo</span>
-                            
-                            <input 
+
+                            <input
                              onChange={(e) => setData('avatar',e.target.files[0])}
                             type="file" name="avatar" className="block w-full text-sm text-slate-500
                               file:mr-4 file:py-2 file:px-4
@@ -81,7 +81,7 @@ export default function Detail_user({user,allLeaderAdmin, auth}) {
                               </dd>
 
                             </div>
-                        
+
                             <div className="grid grid-cols-1 gap-1 py-3 even:bg-gray-50 sm:grid-cols-3 sm:gap-4">
                               <dt className="font-medium text-gray-900">Email</dt>
                               <dd className="text-gray-700">
@@ -90,14 +90,15 @@ export default function Detail_user({user,allLeaderAdmin, auth}) {
                                     value={data.email}
                                     onChange={(e) => setData('email', e.target.value)}
                                     type="email"
+                                    disabled="true"
                                     className="bg-white focus:outline-none focus:shadow-outline border border-gray-300 rounded-lg py-2 px-4 block w-full appearance-none leading-normal"
                                     placeholder="Email"
                                 />
                                 <InputError message={errors.email} className="mt-2" />
                               </dd>
-                              
+
                             </div>
-                        
+
                             <div className="grid grid-cols-1 gap-1 py-3 even:bg-gray-50 sm:grid-cols-3 sm:gap-4">
                               <dt className="font-medium text-gray-900">Phone</dt>
                               <dd className="text-gray-700">
@@ -105,15 +106,13 @@ export default function Detail_user({user,allLeaderAdmin, auth}) {
                                     id="phone"
                                     value={(data.phone)? data.phone : '123'}
                                     onChange={(e) => setData('phone', e.target.value)}
-                                    type="number"
+                                    type="tel"
                                     className="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm bg-white focus:outline-none focus:shadow-outline border   py-2 px-4 block w-full appearance-none leading-normal"
                                     placeholder="Phone"
                                 />
                                 <InputError message={errors.phone} className="mt-2" />
                               </dd>
-                              
                             </div>
-                        
                             <div  className="grid grid-cols-1 gap-1 py-3 even:bg-gray-50 sm:grid-cols-3 sm:gap-4"
                             >
                               <dt className="font-medium text-gray-900">Birthday</dt>
@@ -129,21 +128,21 @@ export default function Detail_user({user,allLeaderAdmin, auth}) {
                                 <InputError message={errors.birthday} className="mt-2" />
                               </dd>
                             </div>
-                        
+
                             <div className="grid grid-cols-1 gap-1 py-3 even:bg-gray-50 sm:grid-cols-3 sm:gap-4"
                             >
                               <dt className="font-medium text-gray-900">Role</dt>
                               <dd className="text-gray-700 sm:col-span-2">
-                              
+
                                 <select  onChange={(e) => setData('role', e.target.value)} value={data.role} name="role" className="block w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline">
                                   <option disabled >Pick role</option>
                                   <option value="0" >Member</option>
-                                  <option value="2" >Leader</option>
+                                  <option value="1" >Leader</option>
                                   <option value="99">Admin</option>
                                 </select>
                               </dd>
                             </div>
-                            {(user.role == 1 || user.role == 99)? 
+                            {(user.role == 1 || user.role == 99)?
                             <div className="grid grid-cols-1 gap-1 py-3 even:bg-gray-50 sm:grid-cols-3 sm:gap-4">
                                 <dt className="font-medium text-gray-900">Team Member</dt>
                                 <dd className="text-gray-700 sm:col-span-2">
@@ -171,7 +170,8 @@ export default function Detail_user({user,allLeaderAdmin, auth}) {
                                 </dt>
                               <dd className="text-gray-700 sm:col-span-2">
                                   <select onChange={(e) => setData('leader_admin', e.target.value)} name="leader_admin" className="block w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline">
-                                    <option disabled value="0" >Pick leader</option>
+                                    <option disabled>Pick leader</option>
+                                    <option value="0">None</option>
                                     {allLeaderAdmin.map((leader_admin) => (
                                       <option key={leader_admin.id} value={leader_admin.id} >{leader_admin.name}</option>
                                     ))}
@@ -188,7 +188,7 @@ export default function Detail_user({user,allLeaderAdmin, auth}) {
                 </div>
             </div>
             </div>
-            
+
         </AuthenticatedLayout>
     );
 }

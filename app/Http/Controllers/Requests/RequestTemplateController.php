@@ -13,7 +13,7 @@ class RequestTemplateController extends Controller
     public function index()
     {
         $templates = RequestTemplate::all();
-        
+
         return Inertia::render('Requests/Request_templates', compact('templates'));
     }
 
@@ -42,16 +42,16 @@ class RequestTemplateController extends Controller
     {
         // Trang chỉnh sửa request template
         $template = RequestTemplate::findOrFail($id);
-        
+
         $inputDetails = InputDetailRequest::where('id_request_templates', $id)->get();
-        
+
         $allLeaderAdmin = User::where('role', '1')->orWhere('role', '99')->get();
 
         return Inertia::render('Requests/Detail_request_template', compact('template','inputDetails','allLeaderAdmin'));
     }
     public function updateField(Request $request, $id)
     {
-      
+
         $template = RequestTemplate::findOrFail($id);
         $field = $request->input('field');
         $value = $request->input('value');
@@ -74,10 +74,16 @@ class RequestTemplateController extends Controller
 
     public function destroy(Request $request, $id)
     {
+        // Xóa input detail request
+        $inputDetails = InputDetailRequest::where('id_request_templates', $request->id)->get();
+        foreach ($inputDetails as $inputDetail) {
+            $inputDetail->delete();
+        }
         // Xóa request template
-        $template = RequestTemplate::findOrFail($request->id);
+        $template = RequestTemplate::find($request->id);
         $template->delete();
 
-        return redirect()->route('Request_templates')->with('success', 'Request Template deleted successfully');
+         return redirect()->route('Request_templates')->with('success', 'Request Template deleted successfully');
+
     }
 }

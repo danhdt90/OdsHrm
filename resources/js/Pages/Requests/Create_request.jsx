@@ -4,8 +4,9 @@ import PrimaryButton from "@/Components/PrimaryButton";
 import Modal from "@/Components/Modal";
 import { useState } from 'react';
 import DangerButton from '@/Components/DangerButton';
-export default function Create_request({ auth ,inputDetailRequests}) {
-  
+
+export default function Create_request({ auth ,inputDetailRequests,flash,allLeaderAdmin}) {
+
     return (
         <AuthenticatedLayout
             user={auth.user}
@@ -22,23 +23,63 @@ export default function Create_request({ auth ,inputDetailRequests}) {
                            <div className="bg-white">
 
                            </div>
-                           <div class="p-6">
+                           <div className="p-6">
                             <form action="">
-                                    {
-                                    inputDetailRequests.map((input, index) => (
-                                        <div class="my-6" key={index}>
+                                {
+                                   inputDetailRequests.map((input, index) =>
+                                        input.input_type === 'select' ? (
+                                            /**
+                                             * Nếu là Select input
+                                             */
+                                            <div className="my-6" key={index}>
+                                                <label htmlFor="">{input.input_description}</label>
+                                                <select required={input.required} name={input.input_name} id="" className="block w-full p-2 border border-gray-300 rounded-md">
+                                                    <option value="">Chọn</option>
+                                                    {
+                                                        input.default_value && input.default_value.split(',').map((option) => {
+                                                            const trimmedOption = option.trim();
+                                                            return <option value={trimmedOption}>{option}</option>
+                                                        })
+                                                    }
+                                                </select>
+                                            </div>
+                                        ) :
+                                        /*
+                                        * *Nếu là Text Area
+                                        */
+                                         input.input_type === 'textarea' ? (
+                                            <div className="my-6" key={index}>
                                             <label htmlFor="">{input.input_description}</label>
-                                            
-                                            <input type={input.input_type} name={input.name} id="" placeholder={input.placeholder} className="block w-full p-2 border border-gray-300 rounded-md" />
-                                        </div>
-                                    ))  
-                                    }
-                                    <PrimaryButton type="submit">Tạo mới</PrimaryButton>
-                                    <DangerButton type="reset">Reset</DangerButton>
+                                            <textarea required={input.required} name={input.input_name} id="" cols="30" rows="10" placeholder={input.placeholder} className="block w-full p-2 border border-gray-300 rounded-md"></textarea>
+                                            </div>
+                                        ) :(input.input_type === 'follower'||input.input_type === 'approver') ? (
+                                            <div className="my-6" key={index}>
+                                                <label htmlFor="">{input.input_description}</label>
+                                                <select required={input.required} name={input.input_name} id="" className="block w-full p-2 border border-gray-300 rounded-md">
+                                                    <option value="">Vui lòng chọn</option>
+                                                    {
+                                                        allLeaderAdmin.map((option) => {
+                                                            return <option value={option.id}>{option.name}</option>
+                                                        })
+                                                    }
+                                                </select>
+                                            </div>
+                                        ) :
+                                        // Nếu là input thông thường
+                                        (
+                                            <div className="my-6" key={index}>
+                                                <label htmlFor="">{input.input_description}</label>
+                                                <input required={input.required} type={input.input_type} name={input.input_name} id="" placeholder={input.placeholder} className="block w-full p-2 border border-gray-300 rounded-md" />
+                                            </div>
+                                        )
+                                    )
+                                }
+                                <PrimaryButton type="submit">Tạo mới</PrimaryButton>
+                                <DangerButton type="reset">Reset</DangerButton>
                             </form>
                            </div>
-                           
-                            
+
+
                         </div>
                     </div>
                 </div>

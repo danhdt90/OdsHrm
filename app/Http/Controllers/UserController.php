@@ -19,21 +19,21 @@ class UserController extends Controller
         // Return view with users data
         return Inertia::render('Users/Users', ['users' => $users]);
     }
- 
+
     public function view($id)
     {
         // Retrieve user data from database using $id
         $user = User::find($id);
         $allLeaderAdmin = User::whereIn('role', ['1', '99'])->get();
-      
-        
+
+
         // Return view with user data
         return Inertia::render('Users/Detail_user', [
             'user' => $user,
             'allLeaderAdmin' => $allLeaderAdmin
         ]);
     }
-    
+
     public function update(Request $request, $id)
     {
         $user = User::find($id);
@@ -49,9 +49,9 @@ class UserController extends Controller
             'email' => $request->email,
             'phone' => $request->phone,
             'role' => $request->role,
-            'password' => Hash::make($request->password),       
-            
+            'password' => Hash::make($request->password),
         ]);
+
         $user->save();
 
         return redirect()->route('Detail_users', $user->id);
@@ -60,7 +60,7 @@ class UserController extends Controller
     public function delete(Request $request)
     {
         $id= $request->id;
-        
+
         $user = User::find($id);
 
         // Delete user from database
@@ -68,10 +68,10 @@ class UserController extends Controller
 
         // Redirect to user list page
         return redirect()->route('Users');
-        
+
     }
     public function create(Request $request)
-    {    
+    {
 
         $user = User::create([
             'name' => $request->name,

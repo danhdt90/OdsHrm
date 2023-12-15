@@ -22,6 +22,7 @@ export default function Detail_template_request({ auth,template, inputDetails ,a
   const { data, setData, post, processing, errors, reset } = useForm({
     input_name: '',
     input_type: '',
+    default_value: '',
     input_description: '',
     required: '',
     id_request_templates:template.id
@@ -45,11 +46,11 @@ export default function Detail_template_request({ auth,template, inputDetails ,a
     const valueApprover = event.target.elements.leader_admin.value;
     const approver_id = valueApprover.split('_')[0];
     const approver_name = valueApprover.split('_')[1];
-    const newApprover = { 
+    const newApprover = {
       user_id: approver_id,
       name: approver_name
     };
-    
+
     if (approvers.some(approver => approver.user_id === approver_id)) {
       alert('Approver already exists!');
       return;
@@ -75,13 +76,22 @@ export default function Detail_template_request({ auth,template, inputDetails ,a
       onFinish: () => reset(),
     });
   }
+  /**
+   * Handle event select input type
+   */
+  const [inputType, setInputType] = useState(null);
+
+  const handleSelectChange = (value) => {
+      setInputType(value);
+      setData('input_type', value); // Uncomment this if you still need to call setData
+  };
   return (
       <AuthenticatedLayout
           user={auth.user}
           header={<h2 className="font-semibold text-xl text-gray-800 leading-tight">Detail {template.template_name}</h2>}
       >
           <Head title="Detail Template" />
-          
+
           <div className="pt-12">
               <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
                   <div className="mx-6 bg-white overflow-hidden shadow-sm sm:rounded-lg divide-y">
@@ -94,8 +104,52 @@ export default function Detail_template_request({ auth,template, inputDetails ,a
                               Thêm mới Input
                           </h2>
                           <hr />
+
                           <div className="mt-6">
-                              <InputLabel htmlFor="name_of_input" value="Name" />
+                              <InputLabel htmlFor="type_input" value="Chọn loại input ?" />
+
+                              <SelectInput
+                                id="input_type"
+                                name="input_type"
+                                placeholder = "Chọn loại input"
+                                value={data.input_type}
+                                onChange={handleSelectChange }
+                                options={[
+                                  { value: 'title', label: 'Title' },
+                                  { value: 'email', label: 'Email'},
+                                  { value: 'number', label: 'Số' },
+                                  { value: 'text', label: 'Text một dòng' },
+                                  { value: 'textarea', label: 'Text nhiều dòng' },
+                                  { value: 'date', label: 'Ngày tháng' },
+                                  { value: 'time', label: 'Giờ' },
+                                  { value: 'file', label: 'File' },
+                                  { value: 'select', label: 'Select' },
+                                  { value: 'follower', label: 'Người theo dõi' },
+                                  { value: 'approver', label: 'Người duyệt trực tiếp' },
+                                ]}
+                              />
+                          </div>
+                            {inputType === 'select' && (
+                                <div className="mt-6">
+                                    <InputError message={'Mỗi giá trị cách nhau bằng 1 dấu phẩy'} className="mt-2" />
+                                    <textarea onChange={(e)=>{ setData('default_value', e.target.value)}} name="default_value" id="" cols="30" rows="10" placeholder="Ví dụ: giatri1,giatri2" className="block w-3/4">{data.default_value}</textarea>
+                                </div>
+                            )}
+                            <div className="mt-6">
+                                <InputLabel htmlFor="input_description" value="Input Description" />
+                                <TextInput
+                                    id="Name"
+                                    type="Text"
+                                    name="input_description"
+                                    value={data.input_description}
+                                    onChange={(e) => setData('input_description', e.target.value)}
+                                    className="mt-1 block w-3/4"
+                                    placeholder="Input Description"
+                                />
+                                <InputError message={errors.input_name} className="mt-2" />
+                            </div>
+                            <div className="mt-6">
+                              <InputLabel htmlFor="name_of_input" value="Tên tham chiếu (gõ không dấu, không dấu các ví dụ nem_cha)" />
                               <TextInput
                                   id="name_of_input"
                                   type="Text"
@@ -104,43 +158,13 @@ export default function Detail_template_request({ auth,template, inputDetails ,a
                                   value={data.input_name}
                                   onChange={(e) => setData('input_name', e.target.value)}
                                   className="mt-1 block w-3/4"
-                                  placeholder="Gõ tên Input *"
-                              />
-                              <InputError message={errors.input_name} className="mt-2" />
-                          </div>
-                          <div className="mt-6">
-                              <InputLabel htmlFor="type_input" value="Required ?" />
-                              <SelectInput
-                                id="input_type"
-                                name="input_type"
-                                placeholder = "Chọn loại input"
-                                value={data.input_type}
-                                onChange={(value_of_select) => setData('input_type',value_of_select) }
-                                options={[
-                                  { value: 'int', label: 'Số' },
-                                  { value: 'text', label: 'Text một dòng' },
-                                  { value: 'textarea', label: 'Text nhiều dòng' },
-                                  { value: 'date', label: 'Ngày tháng' },
-                                  { value: 'file', label: 'File' }
-                                ]}
-                              />
-                          </div>
-                          <div className="mt-6">
-                              <InputLabel htmlFor="input_description" value="Input Description" />
-                              <TextInput
-                                  id="Name"
-                                  type="Text"
-                                  name="input_description"
-                                  value={data.input_description}
-                                  onChange={(e) => setData('input_description', e.target.value)}
-                                  className="mt-1 block w-3/4"
-                                  placeholder="Input Description"
+                                  placeholder="Tên Tham chiếu *"
                               />
                               <InputError message={errors.input_name} className="mt-2" />
                           </div>
                           <div className="mt-6">
                               <InputLabel htmlFor="required_input" value="Required ?" />
-                          
+
                               <SelectInput
                                 id="required_input"
                                 name="required"
@@ -160,11 +184,11 @@ export default function Detail_template_request({ auth,template, inputDetails ,a
                                   Thêm mới Input
                               </PrimaryButton>
                           </div>
-                          
+
                       </form>
                       </Modal>
                       <hr />
-                      
+
                     </div>
                     <div className="p-6">
                        <h3>Danh sách Input</h3>
@@ -202,7 +226,7 @@ export default function Detail_template_request({ auth,template, inputDetails ,a
                         </tbody>
                       </table>
                     </div>
-                      
+
                   </div>
               </div>
           </div>
@@ -223,7 +247,7 @@ export default function Detail_template_request({ auth,template, inputDetails ,a
                                 ))}
                              </select>
                             </div>
-                            
+
                             {/* <div className="mt-6">
                               <InputLabel htmlFor="date_submit" value="Date Submit" />
                               <TextInput
@@ -247,7 +271,7 @@ export default function Detail_template_request({ auth,template, inputDetails ,a
                       <hr />
                       <div className="p-6">
                           <h3>Danh sách người duyệt </h3>
-                
+
                           <table className="table-auto">
                             <thead>
                               <tr>
@@ -278,4 +302,3 @@ export default function Detail_template_request({ auth,template, inputDetails ,a
       </AuthenticatedLayout>
   );
 }
-                    

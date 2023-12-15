@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Head } from '@inertiajs/react';
+import { Head, usePage } from '@inertiajs/react';
 import PrimaryButton from '@/Components/PrimaryButton';
 import DangerButton from '@/Components/DangerButton';
 import Modal from '@/Components/Modal';
@@ -15,6 +15,7 @@ export default function Request_templates({ auth, templates }) {
   const [showModal, setShowModal] = useState(false);
   const [showAddNewModal, setShowAddNewModal] = useState(false);
   const [templateToDelete, setTemplateToDelete] = useState(null);
+
   const { data, setData, post, processing, errors, reset } = useForm({
     template_name: '',
   });
@@ -86,6 +87,7 @@ export default function Request_templates({ auth, templates }) {
                 </Modal>
                 <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                     <div className="p-6 text-gray-900">
+
                       <table className="table-auto w-full">
                         <thead>
                           <tr>
@@ -137,7 +139,7 @@ export default function Request_templates({ auth, templates }) {
                 </DangerButton>
             </div>
           </div>
-           
+
         </Modal>
     </AuthenticatedLayout>
   );

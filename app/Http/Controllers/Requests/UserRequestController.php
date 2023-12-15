@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use App\Models\UserRequests;
 use App\Models\RequestTemplate;
 use App\Models\InputDetailRequest;
+use App\Models\User;
+
 use Inertia\Inertia;
 
 class UserRequestController extends Controller
@@ -21,14 +23,14 @@ class UserRequestController extends Controller
         $id_template = $request->id_template;
         // $inputDetails = InputDetailRequest::find($id_template);
         $inputDetailRequests = InputDetailRequest::where('id_request_templates', $id_template)->get();
-
-        return Inertia::render('Requests/Create_request', compact('inputDetailRequests'));
+        $allLeaderAdmin = User::whereIn('role', ['1', '99'])->get();
+        return Inertia::render('Requests/Create_request', compact('inputDetailRequests','allLeaderAdmin'));
     }
 
     public function create(Request $request)
     {
         // Get the input values
         $request_name = $request->input('request_name');
-       
+
     }
 }

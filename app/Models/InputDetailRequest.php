@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\Model;
         protected $fillable = [
             'input_name',
             'input_type',
+            'default_value',
             'input_description',
             'id_request_templates',
             'required'

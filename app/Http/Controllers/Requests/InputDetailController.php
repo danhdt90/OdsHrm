@@ -10,9 +10,14 @@ class InputDetailController extends Controller
 {
     public function create($id,Request $request)
     {
+        $default_value = $request->default_value;
+        if($request->input_type == 'checkbox'){
+            $default_value = implode(',',$request->default_value);
+        }
         $user = InputDetailRequest::create([
             'input_name' => $request->input_name,
             'input_type' => $request->input_type,
+            'default_value' => $request->default_value,
             'required' => $request->required,
             'input_description' => $request->input_description,
             'id_request_templates'=> $id
