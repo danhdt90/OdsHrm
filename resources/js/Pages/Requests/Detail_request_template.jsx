@@ -85,6 +85,16 @@ export default function Detail_template_request({ auth,template, inputDetails ,a
       setInputType(value);
       setData('input_type', value); // Uncomment this if you still need to call setData
   };
+  /**
+   * Handle edit input
+   */
+    const [showModalEditInputDetail, setShowModalEditInputDetail] = useState(false);
+    const [inputData, setInputData] = useState(null);
+    const openModalEditInputDetail = (input) => {
+        setInputData(input); // Set the data you want to pass to the modal
+        setShowModalEditInputDetail(true); // Show the modal
+    };
+    const closeModalEditInputDetail = () => setShowModalEditInputDetail(false);
   return (
       <AuthenticatedLayout
           user={auth.user}
@@ -104,7 +114,6 @@ export default function Detail_template_request({ auth,template, inputDetails ,a
                               Thêm mới Input
                           </h2>
                           <hr />
-
                           <div className="mt-6">
                               <InputLabel htmlFor="type_input" value="Chọn loại input ?" />
 
@@ -218,13 +227,22 @@ export default function Detail_template_request({ auth,template, inputDetails ,a
                                 {(input.required)?'Bắt buộc' : 'Không bắt buộc'}
                               </td>
                               <td className="border px-4 py-2">
-                                <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Edit</button>
+                                <button onClick={ ()=>openModalEditInputDetail(input)} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Edit</button>
                                 <Link as='button' method='POST' href={route('Delete_input_detail',{id:template.id,input_id:input.id})} className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded ml-2">Delete</Link>
                               </td>
                             </tr>
                           ))}
                         </tbody>
                       </table>
+                    <Modal show={showModalEditInputDetail} onClose={closeModalEditInputDetail}>
+                        <form className="p-6">
+                            <h2 className="text-lg font-medium text-gray-900">
+                                Edit Input
+                            </h2>
+                            <hr />
+                            {inputData && (inputData.input_type)}
+                        </form>
+                    </Modal>
                     </div>
 
                   </div>

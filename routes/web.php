@@ -9,6 +9,8 @@ use App\Http\Controllers\Requests\InputDetailController;
 use App\Http\Controllers\Requests\RequestTemplateController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Requests\UserRequestController;
+
+use App\Models\UserRequests;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -48,17 +50,24 @@ Route::middleware(['auth'])->group(function () {
 
     // User Request routes
     Route::prefix('/user_requests')->group(function () {
-        Route::get('/', [UserRequestController::class, 'index'])->name('Requests');
-        // Route::get('/detail/{id}', [UserRequestController::class, 'view'])->name('Detail_Request');
-        // Route::post('/update/{id}', [UserRequestController::class, 'update'])->name('Update_Request');
-        // Route::get('/delete/{id}', [UserRequestController::class, 'delete'])->name('Delete_Request');
-        Route::get('/create', [UserRequestController::class, 'add_new_request_form'])->name('Create_User_Request');
+        Route::get('/', [UserRequestController::class, 'index'])->name('Request_list');
+        Route::get('/detail/{id}', [UserRequestController::class, 'view'])->name('Request_Detail_Screen');
+        Route::get('/create', [UserRequestController::class, 'add_new_request_screen'])->name('Create_User_Request_Screen');
+        Route::post('/create-user-request', [UserRequestController::class, 'create'])->name('Create_User_Request');
+        // Route::get('', [UserRequestController::class, 'index'])->name('Requests_list');
     });
 });
 
 Route::get('/test', function () {
-    echo "a";
-    phpinfo();
+    // $json_data = json_encode([
+    //     'name' => 'Nguyen Van A',
+    //     'email' => 'email',
+    // ]);
+    // $userRequest = UserRequests::create([
+    //     'id_user' => '1',
+    //     'id_request_templates' => '4',
+    //     'content_request' => $json_data,
+    // ]);
 });
 
 Route::middleware('auth')->group(function () {

@@ -4,9 +4,26 @@ import PrimaryButton from "@/Components/PrimaryButton";
 import Modal from "@/Components/Modal";
 import { useState } from 'react';
 import DangerButton from '@/Components/DangerButton';
+import axios from 'axios';
+export default function Create_request({ auth ,inputDetailRequests,allLeaderAdmin,id_template,templateName}) {
 
-export default function Create_request({ auth ,inputDetailRequests,flash,allLeaderAdmin}) {
 
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        try {
+            const formData = new FormData(e.target); // Create a new FormData object from the form element
+            const response = await axios.post(route('Create_User_Request'), formData);
+            // Handle the response
+            console.log(response.data);
+            if (response.data.status === true) {
+                // history.push(route('dashboard'));
+
+            }
+        } catch (error) {
+            // Handle the error
+            console.error(error);
+        }
+    }
     return (
         <AuthenticatedLayout
             user={auth.user}
@@ -24,13 +41,17 @@ export default function Create_request({ auth ,inputDetailRequests,flash,allLead
 
                            </div>
                            <div className="p-6">
-                            <form action="">
+                            <form onSubmit={handleSubmit} method='POST' encType="multipart/form-data">
+                                <input type="hidden" name="id_user" value={auth.user.id} />
+                                <input type="hidden" name="id_template" value={id_template} />
+
                                 {
                                    inputDetailRequests.map((input, index) =>
                                         input.input_type === 'select' ? (
                                             /**
                                              * Nếu là Select input
                                              */
+
                                             <div className="my-6" key={index}>
                                                 <label htmlFor="">{input.input_description}</label>
                                                 <select required={input.required} name={input.input_name} id="" className="block w-full p-2 border border-gray-300 rounded-md">
@@ -78,8 +99,6 @@ export default function Create_request({ auth ,inputDetailRequests,flash,allLead
                                 <DangerButton type="reset">Reset</DangerButton>
                             </form>
                            </div>
-
-
                         </div>
                     </div>
                 </div>

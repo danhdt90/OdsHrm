@@ -47,7 +47,7 @@ export default function Dashboard({ auth ,allTemplate }) {
                                     <h3>Add new request</h3>
                                     <hr />
                                     {allTemplate.map((template, index) => (
-                                        <Link key={index} method="get" as="button" href={route("Create_User_Request")} data={{ id_template: template.id }} className="block mt-4 text-blue-500">{template.template_name}</Link>
+                                        <Link key={index} method="get" as="button" href={route("Create_User_Request_Screen")} data={{ id_template: template.id }} className="block mt-4 text-blue-500">{template.template_name}</Link>
                                     ))}
                                 </div>
                             </Modal>

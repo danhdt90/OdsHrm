@@ -10,27 +10,64 @@ use App\Models\InputDetailRequest;
 use App\Models\User;
 
 use Inertia\Inertia;
+use Illuminate\Support\Facades\Storage;
 
 class UserRequestController extends Controller
 {
     public function index()
     {
-        return;
+        // $userRequests = UserRequests::all();
+        $allLeaderAdmin = User::whereIn('role', ['1', '99'])->get();
+
+        $userRequests = UserRequests::join('users', 'user_requests.id_user', '=', 'users.id')
+            ->join('request_templates', 'user_requests.request_template', '=', 'request_templates.id')
+            ->select('user_requests.*', 'users.name as user_name', 'request_templates.template_name')
+            ->get();
+        return Inertia::render('Requests/Request_list', compact('userRequests','allLeaderAdmin'));
     }
 
-    public function add_new_request_form(Request $request)
+    public function add_new_request_screen(Request $request)
     {
         $id_template = $request->id_template;
+
         // $inputDetails = InputDetailRequest::find($id_template);
         $inputDetailRequests = InputDetailRequest::where('id_request_templates', $id_template)->get();
         $allLeaderAdmin = User::whereIn('role', ['1', '99'])->get();
-        return Inertia::render('Requests/Create_request', compact('inputDetailRequests','allLeaderAdmin'));
+        return Inertia::render('Requests/Create_request', compact('inputDetailRequests','allLeaderAdmin','id_template'));
     }
 
     public function create(Request $request)
     {
         // Get the input values
-        $request_name = $request->input('request_name');
+            $requestAll = $request->all();
+            // Xử lý file
+            $uploadedFiles = [];
+            if ($request->allFiles()) {
+                $allFiles = $request->allFiles();
+                foreach ($allFiles as $name_input => $file) {
+                    $fileName = $file->getClientOriginalName();
+                    $path = $file->store('public/files');
 
+                    // $avatar = $request->file('avatar');
+                    // $filename = time() . '.' . $avatar->getClientOriginalExtension();
+                    // $avatar->storeAs('public/file', $filename);
+                    // $user->avatar = $filename;
+
+                    $requestAll[$name_input] = [
+                        'file_name' => $fileName,
+                        'file_path' => Storage::url($path),
+                    ];
+                }
+            }
+            $json_data = json_encode($requestAll, JSON_UNESCAPED_UNICODE);
+            // Lưu vào cơ sở dữ liệu
+
+            $userRequest = UserRequests::create([
+                'id_user' => $request->id_user,
+                'request_template' => $request->id_template,
+                'content_request' => $json_data,
+            ]);
+            // return response()->json(['status'=>true]);
+            return redirect()->route('dashboard');
+        }
     }
-}

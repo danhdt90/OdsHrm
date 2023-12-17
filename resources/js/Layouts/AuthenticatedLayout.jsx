@@ -58,7 +58,7 @@ export default function Authenticated({ user, header, children }) {
 
                                         <Dropdown.Content>
                                             <Dropdown.Link href={route('Request_templates')}>Template</Dropdown.Link>
-                                            <Dropdown.Link href={route('Request_templates')} >
+                                            <Dropdown.Link href={route('Request_list')} >
                                                  Request List
                                             </Dropdown.Link>
                                         </Dropdown.Content>

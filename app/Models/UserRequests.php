@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class UserTemplate extends Model
+class UserRequests extends Model
 {
     use HasFactory;
     protected $table = 'user_requests';
@@ -13,7 +13,8 @@ class UserTemplate extends Model
         'request_name',
         'request_template',
         'content_request',
-        'flow_approvers'
+        'flow_approvers',
+        'id_user',
     ];
     public function users()
     {

@@ -81,6 +81,6 @@ class UserController extends Controller
             'phone'=> $request->phone,
             'role'=> $request->role,
         ]);
-        return redirect()->route('Users');
+        return redirect()->route('dashboard');
     }
 }
