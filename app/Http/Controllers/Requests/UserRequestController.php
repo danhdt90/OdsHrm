@@ -8,6 +8,7 @@ use App\Models\UserRequests;
 use App\Models\RequestTemplate;
 use App\Models\InputDetailRequest;
 use App\Models\User;
+use App\Models\UserRequestsApprover;
 
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Storage;
@@ -48,17 +49,14 @@ class UserRequestController extends Controller
                     $fileName = $file->getClientOriginalName();
                     $path = $file->store('public/files');
 
-                    // $avatar = $request->file('avatar');
-                    // $filename = time() . '.' . $avatar->getClientOriginalExtension();
-                    // $avatar->storeAs('public/file', $filename);
-                    // $user->avatar = $filename;
-
                     $requestAll[$name_input] = [
                         'file_name' => $fileName,
                         'file_path' => Storage::url($path),
                     ];
                 }
             }
+
+
             $json_data = json_encode($requestAll, JSON_UNESCAPED_UNICODE);
             // Lưu vào cơ sở dữ liệu
 
@@ -67,7 +65,29 @@ class UserRequestController extends Controller
                 'request_template' => $request->id_template,
                 'content_request' => $json_data,
             ]);
+
+            if ($request->input('follower')) {
+                $followerValue = $request->input('follower');
+                try {
+                    UserRequestsApprover::create([
+                        'user_id' => $followerValue,
+                        'id_user_request' => $userRequest->id,
+                    ]);
+                } catch (\Throwable $th) {
+                    throw $th;
+                }
+
+                // Sử dụng giá trị của trường dữ liệu "follower" ở đây
+            }
+
             // return response()->json(['status'=>true]);
-            return redirect()->route('dashboard');
+            return response()->json(['status' => true]);
         }
+    public function delete(Request $request)
+    {
+        $id = $request->id;
+        $userRequest = UserRequests::find($id);
+        $userRequest->delete();
+        return response()->json(['status' => true]);
     }
+}

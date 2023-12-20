@@ -54,6 +54,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/detail/{id}', [UserRequestController::class, 'view'])->name('Request_Detail_Screen');
         Route::get('/create', [UserRequestController::class, 'add_new_request_screen'])->name('Create_User_Request_Screen');
         Route::post('/create-user-request', [UserRequestController::class, 'create'])->name('Create_User_Request');
+        Route::delete('/delete/{id}', [UserRequestController::class, 'delete'])->name('Delete_User_Request');
         // Route::get('', [UserRequestController::class, 'index'])->name('Requests_list');
     });
 });

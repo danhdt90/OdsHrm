@@ -16,7 +16,6 @@ export default function Request_list({ auth ,allLeaderAdmin,userRequests }) {
     const handleApprover = (e) => {
         console.log(e.target.value);
         e.preventDefault();
-
     }
     return (
         <AuthenticatedLayout
@@ -35,7 +34,6 @@ export default function Request_list({ auth ,allLeaderAdmin,userRequests }) {
                                         <th className="px-4 py-2">ID</th>
                                         <th className="px-4 py-2">Tên đề xuất</th>
                                         <th className="px-4 py-2">Người tạo</th>
-                                        {/* <th className="px-4 py-2">Người duyệt</th> */}
                                         <th className="px-4 py-2">Trạng thái</th>
                                         <th className="px-4 py-2">Ngày tạo</th>
                                         <th className="px-4 py-2">Chi tiết</th>
@@ -56,7 +54,7 @@ export default function Request_list({ auth ,allLeaderAdmin,userRequests }) {
                                                 </select>
                                             </td>
                                             <td className="border px-4 py-2">{request.created_at}</td>
-                                            <td className="border px-4 py-2"><PrimaryButton onClick={()=>{openModal(request.content_request)}} method="get" as="button"  className="block mt-4 text-blue-500">Chi tiết</PrimaryButton></td>
+                                            <td className="border px-4 py-2"><PrimaryButton onClick={()=>{openModal(request.content_request)}} as="button"  className="block mt-4 text-blue-500">Chi tiết</PrimaryButton></td>
                                         </tr>
                                     ))}
                                 </tbody>
@@ -68,15 +66,7 @@ export default function Request_list({ auth ,allLeaderAdmin,userRequests }) {
             <Modal show={showModalDetailRequest} onClose={closeModal}>
                 <div className="p-6">
                     <h2 className="font-bold">Nội dung Request</h2>
-                    {/* {requestDetailData && (() => {
-                        const jsonObject  = JSON.parse(requestDetailData);
-                        for (const key in jsonObject) {
-                            if (Object.hasOwnProperty.call(jsonObject, key)) {
-                                const value = jsonObject[key];
-                                return `${key}: ${value}`;
-                            }
-                        }
-                    })()} */}
+
                     {requestDetailData && (() => {
                         const jsonObject  = JSON.parse(requestDetailData);
 

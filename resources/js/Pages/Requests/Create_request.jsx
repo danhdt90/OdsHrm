@@ -11,16 +11,12 @@ export default function Create_request({ auth ,inputDetailRequests,allLeaderAdmi
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const formData = new FormData(e.target); // Create a new FormData object from the form element
+            const formData = new FormData(e.target);
             const response = await axios.post(route('Create_User_Request'), formData);
-            // Handle the response
-            console.log(response.data);
-            if (response.data.status === true) {
-                // history.push(route('dashboard'));
 
-            }
+                window.location.href = route('dashboard');
+
         } catch (error) {
-            // Handle the error
             console.error(error);
         }
     }
@@ -73,10 +69,12 @@ export default function Create_request({ auth ,inputDetailRequests,allLeaderAdmi
                                             <label htmlFor="">{input.input_description}</label>
                                             <textarea required={input.required} name={input.input_name} id="" cols="30" rows="10" placeholder={input.placeholder} className="block w-full p-2 border border-gray-300 rounded-md"></textarea>
                                             </div>
-                                        ) :(input.input_type === 'follower'||input.input_type === 'approver') ? (
+                                        ) :
+                                        /** Select người duyệt */
+                                        (input.input_type === 'follower'||input.input_type === 'approver') ? (
                                             <div className="my-6" key={index}>
                                                 <label htmlFor="">{input.input_description}</label>
-                                                <select required={input.required} name={input.input_name} id="" className="block w-full p-2 border border-gray-300 rounded-md">
+                                                <select required={input.required} name="follower" id="" className="block w-full p-2 border border-gray-300 rounded-md">
                                                     <option value="">Vui lòng chọn</option>
                                                     {
                                                         allLeaderAdmin.map((option) => {

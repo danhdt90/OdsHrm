@@ -133,7 +133,7 @@ export default function Detail_template_request({ auth,template, inputDetails ,a
                                   { value: 'time', label: 'Giờ' },
                                   { value: 'file', label: 'File' },
                                   { value: 'select', label: 'Select' },
-                                  { value: 'follower', label: 'Người theo dõi' },
+                                //   { value: 'follower', label: 'Người theo dõi' },
                                   { value: 'approver', label: 'Người duyệt trực tiếp' },
                                 ]}
                               />
