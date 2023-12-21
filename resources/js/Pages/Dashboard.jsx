@@ -58,10 +58,6 @@ export default function Dashboard({ auth ,allTemplate , userRequests ,needApprov
                                             <p>Email: {auth.user.email}</p>
                                             <p>Chức vụ: {auth.user.role == 99 ? 'Admin' : 'User'}</p>
                                         </div>
-                                        <div>
-                                            <p>Đơn vị: {auth.user.unit}</p>
-                                            <p>Phòng ban: {auth.user.department}</p>
-                                        </div>
                                     </div>
                                 </div>
                                 <div className="col-span-3 row-span-2">
