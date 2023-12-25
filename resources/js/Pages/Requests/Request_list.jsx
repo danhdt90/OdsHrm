@@ -3,6 +3,8 @@ import { Head, Link } from '@inertiajs/react';
 import PrimaryButton from "@/Components/PrimaryButton";
 import Modal from "@/Components/Modal";
 import { useState } from 'react';
+import DangerButton from '@/Components/DangerButton';
+import axios from 'axios';
 export default function Request_list({ auth ,allLeaderAdmin,userRequests }) {
     const [showModalDetailRequest, setShowModalDetailRequest] = useState(false);
     const [requestDetailData, setRequestDetailData] = useState(null);
@@ -13,9 +15,25 @@ export default function Request_list({ auth ,allLeaderAdmin,userRequests }) {
     const closeModal = () => {
         setShowModalDetailRequest(false);
     }
-    const handleApprover = (e) => {
-        console.log(e.target.value);
-        e.preventDefault();
+
+    const handleApprover = (id_request) => (event) => {
+        const field = 'status';
+        const field_value = event.target.value;
+        axios.post(route('Update_Request_Field'), { id_request,field, field_value })
+            .then(response => {
+                // Handle response if needed
+                console.log(response.data.status);
+            })
+            .catch(error => {
+                // Handle error if needed
+                console.log(error);
+            });
+    }
+    const handleDeleteRequest = (id) => {
+        return (e) => {
+            e.preventDefault();
+            console.log(id);
+        }
     }
     return (
         <AuthenticatedLayout
@@ -41,20 +59,22 @@ export default function Request_list({ auth ,allLeaderAdmin,userRequests }) {
                                 </thead>
                                 <tbody>
                                     {userRequests.map((request, index) => (
-                                        <tr>
+                                        <tr key={index}>
                                             <td className="border px-4 py-2">{request.id}</td>
                                             <td className="border px-4 py-2"><span className='font-bold'>[{request.template_name}]</span>{request.user_name}</td>
                                             <td className="border px-4 py-2">{request.user_name}</td>
-                                            <td className="border px-4 py-2"></td>
                                             <td className="border px-4 py-2">
-                                                <select onChange={handleApprover}>
+                                                <select value ={request.status} onChange={handleApprover(request.id,this)}>
                                                     <option value="0">Chờ duyệt</option>
                                                     <option value="1">Đã duyệt</option>
                                                     <option value="2">Từ chối</option>
                                                 </select>
                                             </td>
                                             <td className="border px-4 py-2">{request.created_at}</td>
-                                            <td className="border px-4 py-2"><PrimaryButton onClick={()=>{openModal(request.content_request)}} as="button"  className="block mt-4 text-blue-500">Chi tiết</PrimaryButton></td>
+                                            <td className="border px-4 py-2">
+                                                <PrimaryButton onClick={()=>{openModal(request.content_request)}} as="button"  className="block mt-4 text-blue-500">Chi tiết</PrimaryButton>
+                                                <DangerButton onClick={handleDeleteRequest(request.id)} as="button" className="block mt-4 text-500">Xóa</DangerButton>
+                                            </td>
                                         </tr>
                                     ))}
                                 </tbody>
@@ -68,16 +88,25 @@ export default function Request_list({ auth ,allLeaderAdmin,userRequests }) {
                     <h2 className="font-bold">Nội dung Request</h2>
 
                     {requestDetailData && (() => {
-                        const jsonObject  = JSON.parse(requestDetailData);
-
+                        const jsonObject = JSON.parse(requestDetailData);
                         return (
                             <div>
-                                {Object.entries(jsonObject).map(([key, value]) => (
-                                    <div key={key}>
-                                        {/* {key} : {typeof value === 'object' ? JSON.stringify(value) : value} */}
-                                        {key} : {typeof value === 'object' ? value.file_name : value}
-                                    </div>
-                                ))}
+                                <table className='table-auto border-collapse'>
+                                    <thead>
+                                        <tr>
+                                            <th className="px-4 py-2">Tên trường</th>
+                                            <th className="px-4 py-2">Giá trị</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {Object.entries(jsonObject).map(([key, value]) => (
+                                            <tr key={key}>
+                                                <td>{typeof value === 'object' ? value.file_name : value}</td>
+                                            </tr>
+                                        ))}
+
+                                    </tbody>
+                                </table>
                             </div>
                         );
                     })()}

@@ -4,8 +4,9 @@ import PrimaryButton from "@/Components/PrimaryButton";
 import Modal from "@/Components/Modal";
 import { useState } from 'react';
 import DangerButton from '@/Components/DangerButton';
-export default function Dashboard({ auth ,allTemplate , userRequests ,needApprove}) {
+export default function Dashboard({ auth ,allTemplate , userRequests ,needApprove, inputDetailRequests}) {
     const [showModalNewRequest, setShowModalNewRequest] = useState(false);
+
     const openModal = () => {
         setShowModalNewRequest(true);
     }
@@ -15,13 +16,24 @@ export default function Dashboard({ auth ,allTemplate , userRequests ,needApprov
 
     const [showModalDetailRequest, setShowModalDetailRequest] = useState(false);
     const [requestDetailData, setRequestDetailData] = useState(null);
-
-    const openModalDetailRequest = (request) => {
+    const openModalDetailRequest = (request,id_request) => {
         setRequestDetailData(request);
         setShowModalDetailRequest(true);
     }
     const closeModalDetailRequest = () => {
         setShowModalDetailRequest(false);
+    }
+    const [showDetailRequestApprover, setShowDetailRequestApprover] = useState(false);
+    const [idRequestDetail, setIdRequestDetail] = useState(null);
+    const [requestDetailNeedApprover, setRequestDetailNeedApprover] = useState(null);
+
+    const openDetailRequestApprover = (request,id_request) => {
+        setRequestDetailNeedApprover(request);
+        setIdRequestDetail(id_request);
+        setShowDetailRequestApprover(true);
+    }
+    const closeDetailRequestApprover = () => {
+        setShowDetailRequestApprover(false);
     }
     const handleDeleteRequest = (id) => {
         return () => {
@@ -33,6 +45,33 @@ export default function Dashboard({ auth ,allTemplate , userRequests ,needApprov
             });
         }
     }
+    const handleApprove = (id_request)=>(event) => {
+        const field = 'status';
+        const field_value = 1
+        axios.post(route('Update_Request_Field'), { id_request,field, field_value })
+            .then(response => {
+                // Handle response if needed
+                console.log(response.data.status);
+            })
+            .catch(error => {
+                // Handle error if needed
+                console.log(error);
+            });
+    }
+    const handleReject = (id_request)=>(event) => {
+        const field = 'status';
+        const field_value = 2;
+        axios.post(route('Update_Request_Field'), { id_request,field, field_value })
+            .then(response => {
+                // Handle response if needed
+                console.log(response.data.status);
+            })
+            .catch(error => {
+                // Handle error if needed
+                console.log(error);
+            });
+    }
+
     return (
         <AuthenticatedLayout
             user={auth.user}
@@ -85,7 +124,7 @@ export default function Dashboard({ auth ,allTemplate , userRequests ,needApprov
                                                             <td className="border px-4 py-2"><span className='font-bold'>[{request.template_name}]</span></td>
                                                             <td className="border px-4 py-2">{request.user_name}</td>
                                                             <td className="border px-4 py-2">{request.created_at}</td>
-                                                            <td className="border px-4 py-2"><PrimaryButton onClick={()=>{openModalDetailRequest(request.content_request)}} method="get" as="button"  className="block mt-4 text-blue-500">Chi tiết</PrimaryButton></td>
+                                                            <td className="border px-4 py-2"><PrimaryButton onClick={()=>{openDetailRequestApprover(request.content_request,request.id)}} method="get" as="button"  className="block mt-4 text-blue-500">Chi tiết</PrimaryButton></td>
                                                         </tr>
                                                     ))}
                                                 </tbody>
@@ -134,20 +173,57 @@ export default function Dashboard({ auth ,allTemplate , userRequests ,needApprov
                                     ))}
                                 </div>
                             </Modal>
+                            <Modal show={showDetailRequestApprover} onClose={closeDetailRequestApprover}>
+                                <div className="p-6">
+                                    <h2 className="font-bold">Nội dung Request cần duyệt</h2>
+                                    <hr />
+                                    <div className='p-2'>
+                                        {requestDetailNeedApprover && (() => {
+                                            const jsonObject = JSON.parse(requestDetailNeedApprover);
+                                            return (
+                                                <div>
+                                                    <table>
+                                                        <tbody>
+                                                            {Object.entries(jsonObject).map(([key, value]) => (
+                                                                <tr key={key}>
+                                                                    <td className='font-bold'>{key!="follower"?inputDetailRequests[key]:'Người theo dõi'}</td>
+                                                                    <td>
+                                                                        {typeof value === 'object' ? value.file_name : value}</td>
+                                                                </tr>
+                                                            ))}
+                                                        </tbody>
+                                                    </table>
+                                                    <div className='flex justify-center my-4'>
+                                                        <PrimaryButton onClick={handleApprove(idRequestDetail)}>Approve</PrimaryButton>
+                                                        <DangerButton onClick={handleReject(idRequestDetail)}>Reject</DangerButton>
+                                                    </div>
+                                                </div>
+                                            );
+                                        })()}
+                                    </div>
+
+                                </div>
+                            </Modal>
                             <Modal show={showModalDetailRequest} onClose={closeModalDetailRequest}>
                                 <div className="p-6">
                                     <h2 className="font-bold">Nội dung Request</h2>
                                     <hr />
                                     <div className='p-2'>
                                         {requestDetailData && (() => {
-                                            const jsonObject  = JSON.parse(requestDetailData);
+                                            const jsonObject = JSON.parse(requestDetailData);
                                             return (
                                                 <div>
-                                                    {Object.entries(jsonObject).map(([key, value]) => (
-                                                        <div key={key}>
-                                                            <span>{key}</span> : <span>{typeof value === 'object' ? value.file_name : value}</span>
-                                                        </div>
-                                                    ))}
+                                                    <table>
+                                                        <tbody>
+                                                            {Object.entries(jsonObject).map(([key, value]) => (
+                                                                <tr key={key}>
+                                                                    <td className='font-bold'>{key!="follower"?inputDetailRequests[key]:'Người theo dõi'}</td>
+                                                                    <td>
+                                                                        {typeof value === 'object' ? value.file_name : value}</td>
+                                                                </tr>
+                                                            ))}
+                                                        </tbody>
+                                                    </table>
                                                 </div>
                                             );
                                         })()}

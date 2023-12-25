@@ -36,7 +36,20 @@ class UserRequestController extends Controller
         $allLeaderAdmin = User::whereIn('role', ['1', '99'])->get();
         return Inertia::render('Requests/Create_request', compact('inputDetailRequests','allLeaderAdmin','id_template'));
     }
-
+    public function update_request_field(Request $request)
+    {
+        try {
+            $id = $request->id_request;
+            $field = $request->field;
+            $value_field = $request->field_value;
+            $userRequest = UserRequests::find($id);
+            $userRequest->$field = $value_field;
+            $userRequest->save();
+            return response()->json(['status' => true]);
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+    }
     public function create(Request $request)
     {
         // Get the input values
@@ -86,6 +99,7 @@ class UserRequestController extends Controller
     public function delete(Request $request)
     {
         $id = $request->id;
+        UserRequestsApprover::where('id_user_request', $id)->delete();
         $userRequest = UserRequests::find($id);
         $userRequest->delete();
         return response()->json(['status' => true]);

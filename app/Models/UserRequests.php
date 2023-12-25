@@ -13,11 +13,8 @@ class UserRequests extends Model
         'request_name',
         'request_template',
         'content_request',
+        'status',
         'flow_approvers',
         'id_user',
     ];
-    public function users()
-    {
-        return $this->belongsToMany(User::class)->withPivot('order')->withTimestamps();
-    }
 }

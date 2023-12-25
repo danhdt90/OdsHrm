@@ -7,6 +7,7 @@ use Inertia\Inertia;
 use App\Models\RequestTemplate;
 use App\Models\UserRequests;
 use App\Models\UserRequestsApprover;
+use App\Models\InputDetailRequest;
 use Illuminate\Support\Facades\Auth;
 class DashboardController extends Controller
 {
@@ -24,7 +25,9 @@ class DashboardController extends Controller
             ->select('user_request_approver.*', 'user_requests.id as user_request_id', 'user_requests.request_name', 'request_templates.template_name', 'users.name as user_name')
             ->get();
         $allTemplate = RequestTemplate::all();
-        return Inertia::render('Dashboard', compact('allTemplate', 'userRequests','needApprove'));
+        $inputDetailRequests = InputDetailRequest::pluck('input_description', 'input_name')->all();
+
+        return Inertia::render('Dashboard', compact('allTemplate', 'userRequests','needApprove','inputDetailRequests'));
     }
 
 }
