@@ -26,6 +26,7 @@ export default function Detail_user({user,allLeaderAdmin, auth}) {
       birthday: user.birthday,
       password: '',
       phone: user.phone,
+      direct_manager: user.direct_manager,
       role:user.role
     });
     return (
