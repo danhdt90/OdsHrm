@@ -49,6 +49,7 @@ class UserController extends Controller
             'email' => $request->email,
             'phone' => $request->phone,
             'role' => $request->role,
+            'direct_manager'=> $request->direct_manager,
             'password' => Hash::make($request->password),
         ]);
 
@@ -80,6 +81,7 @@ class UserController extends Controller
             'birthday'  => $request->birthday,
             'phone'=> $request->phone,
             'role'=> $request->role,
+            'direct_manager'=> $request->direct_manager,
         ]);
         return redirect()->route('dashboard');
     }

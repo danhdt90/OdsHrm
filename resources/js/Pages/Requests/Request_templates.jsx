@@ -127,7 +127,7 @@ export default function Request_templates({ auth, templates }) {
           show={showModal}
           handleClose={() => setShowModal(false)}
         >
-          <div class="p-6">
+          <div className="p-6">
             <div className="mt-6">
                 Are you sure you want to delete this template?
             </div>

@@ -4,7 +4,7 @@ import PrimaryButton from "@/Components/PrimaryButton";
 import Modal from "@/Components/Modal";
 import { useState } from 'react';
 import DangerButton from '@/Components/DangerButton';
-export default function Dashboard({ auth ,allTemplate , userRequests ,needApprove, inputDetailRequests}) {
+export default function Dashboard({ auth ,allTemplate , userRequests ,needApprove, inputDetailRequests, userList}) {
     const [showModalNewRequest, setShowModalNewRequest] = useState(false);
 
     const openModal = () => {
@@ -28,6 +28,7 @@ export default function Dashboard({ auth ,allTemplate , userRequests ,needApprov
     const [requestDetailNeedApprover, setRequestDetailNeedApprover] = useState(null);
 
     const openDetailRequestApprover = (request,id_request) => {
+
         setRequestDetailNeedApprover(request);
         setIdRequestDetail(id_request);
         setShowDetailRequestApprover(true);
@@ -45,19 +46,21 @@ export default function Dashboard({ auth ,allTemplate , userRequests ,needApprov
             });
         }
     }
-    const handleApprove = (id_request)=>(event) => {
+    const handleApprove = (id_request) => (event) => {
         const field = 'status';
-        const field_value = 1
-        axios.post(route('Update_Request_Field'), { id_request,field, field_value })
-            .then(response => {
+        const field_value = 1;
+        axios
+            .post(route('Update_Request_Field'), { id_request, field, field_value })
+            .then((response) => {
                 // Handle response if needed
                 console.log(response.data.status);
+                window.location.reload(); // Reload the page
             })
-            .catch(error => {
+            .catch((error) => {
                 // Handle error if needed
                 console.log(error);
             });
-    }
+    };
     const handleReject = (id_request)=>(event) => {
         const field = 'status';
         const field_value = 2;
@@ -65,6 +68,7 @@ export default function Dashboard({ auth ,allTemplate , userRequests ,needApprov
             .then(response => {
                 // Handle response if needed
                 console.log(response.data.status);
+                window.location.reload(); // Reload the page
             })
             .catch(error => {
                 // Handle error if needed
@@ -87,9 +91,9 @@ export default function Dashboard({ auth ,allTemplate , userRequests ,needApprov
                                 <div className="row-span-2">
                                     <h3>Thông tin cá nhân</h3>
                                     <div className=''>
-                                        <div class="-mx-6 px-6 py-4 text-center">
+                                        <div className="-mx-6 px-6 py-4 text-center">
                                             <a href="#" title="home" className='text-center'>
-                                                <img class="w-32" src={(auth.user.avatar)?'/storage/avatars/'+auth.user.avatar : 'https://th.bing.com/th/id/R.a9fc8abba0093589686a9550d21ee743?rik=1iof%2b%2bYe5k84QQ&pid=ImgRaw&r=0'} alt="" set="" />
+                                                <img className="w-32" src={(auth.user.avatar)?'/storage/avatars/'+auth.user.avatar : 'https://th.bing.com/th/id/R.a9fc8abba0093589686a9550d21ee743?rik=1iof%2b%2bYe5k84QQ&pid=ImgRaw&r=0'} alt="" set="" />
                                             </a>
                                         </div>
                                         <div className=''>
@@ -113,18 +117,21 @@ export default function Dashboard({ auth ,allTemplate , userRequests ,needApprov
                                                         <th className="px-4 py-2">STT</th>
                                                         <th className="px-4 py-2">Request Name</th>
                                                         <th className="px-4 py-2">Người tạo</th>
+                                                        <th className="px-4 py-2">Trạng thái</th>
                                                         <th className="px-4 py-2">Ngày tạo</th>
                                                         <th className="px-4 py-2">Chi tiết</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
                                                     {needApprove.map((request, index) => (
-                                                        <tr>
+                                                        <tr key={index}>
                                                             <td className="border px-4 py-2">{index+1}</td>
                                                             <td className="border px-4 py-2"><span className='font-bold'>[{request.template_name}]</span></td>
                                                             <td className="border px-4 py-2">{request.user_name}</td>
+                                                            <td className="border px-4 py-2">{request.status==0?"Chờ duyệt":request.status==1?"Đã duyệt":"Từ chối"}</td>
                                                             <td className="border px-4 py-2">{request.created_at}</td>
-                                                            <td className="border px-4 py-2"><PrimaryButton onClick={()=>{openDetailRequestApprover(request.content_request,request.id)}} method="get" as="button"  className="block mt-4 text-blue-500">Chi tiết</PrimaryButton></td>
+                                                            <td className="border px-4 py-2">
+                                                                <PrimaryButton onClick={()=>{openDetailRequestApprover(request.content_request,request.id)}} method="get" as="button"  className="block mt-4 text-blue-500">Chi tiết</PrimaryButton></td>
                                                         </tr>
                                                     ))}
                                                 </tbody>
@@ -134,7 +141,7 @@ export default function Dashboard({ auth ,allTemplate , userRequests ,needApprov
                                     <div className='my-5'>
                                         <h3 className='font-bold'>Các đề xuất đã tạo:</h3>
                                     </div>
-                                    <table class="table-auto">
+                                    <table className="table-auto">
                                         <thead>
                                             <tr>
                                                 <th className="px-4 py-2">STT</th>
@@ -146,15 +153,16 @@ export default function Dashboard({ auth ,allTemplate , userRequests ,needApprov
                                         </thead>
                                         <tbody>
                                             {userRequests.map((request, index) => (
-                                                    <tr>
+                                                <tr key={index}>
                                                     <td className="border px-4 py-2">{index+1}</td>
                                                     <td className="border px-4 py-2"><span className='font-bold'>[{request.template_name}]</span>{request.user_name}</td>
                                                     <td className="border px-4 py-2">
                                                         {request.status==0?"Chờ duyệt":request.status==1?"Đã duyệt":"Từ chối"}
                                                     </td>
                                                     <td className="border px-4 py-2">{request.created_at}</td>
-                                                    <td className="border px-4 py-2"><PrimaryButton onClick={()=>{openModalDetailRequest(request.content_request)}} method="get" as="button"  className="block mt-4 text-blue-500">Chi tiết</PrimaryButton>
-                                                    <DangerButton onClick={handleDeleteRequest(request.id)}> Xóa Request </DangerButton>
+                                                    <td className="border px-4 py-2">
+                                                        <PrimaryButton onClick={()=>{openModalDetailRequest(request.content_request)}} method="get" as="button"  className="block mt-4 text-blue-500 mr-3">Chi tiết</PrimaryButton>
+                                                        <DangerButton onClick={handleDeleteRequest(request.id)}> Xóa Request </DangerButton>
                                                     </td>
                                                 </tr>
                                             ))}
@@ -186,15 +194,37 @@ export default function Dashboard({ auth ,allTemplate , userRequests ,needApprov
                                                         <tbody>
                                                             {Object.entries(jsonObject).map(([key, value]) => (
                                                                 <tr key={key}>
-                                                                    <td className='font-bold'>{key!="follower"?inputDetailRequests[key]:'Người theo dõi'}</td>
-                                                                    <td>
-                                                                        {typeof value === 'object' ? value.file_name : value}</td>
+                                                                    <td className='font-bold'>
+                                                                        {
+                                                                            key=="follower"?
+                                                                            "Quản lý trực tiếp:":
+                                                                            key=="id_user"?
+                                                                            "Người tạo":
+                                                                            key=="id_template"?
+                                                                            "Loại đề xuất":
+                                                                            inputDetailRequests[key]
+                                                                        }
+                                                                    </td>
+                                                                    <td className='m-3'>
+
+                                                                        {
+                                                                            key=="follower"?
+                                                                            userList[value]:
+                                                                            key=="id_user"?
+                                                                            userList[value]:
+                                                                            key=="id_template"?
+                                                                            value:
+                                                                            typeof value === 'object' && value.file_path ?
+                                                                            <a className='text-green-500' href={value.file_path} download>Tải file về</a> : value
+                                                                        }
+                                                                    </td>
                                                                 </tr>
+
                                                             ))}
                                                         </tbody>
                                                     </table>
                                                     <div className='flex justify-center my-4'>
-                                                        <PrimaryButton onClick={handleApprove(idRequestDetail)}>Approve</PrimaryButton>
+                                                        <PrimaryButton className='mr-4' onClick={handleApprove(idRequestDetail)}>Approve</PrimaryButton>
                                                         <DangerButton onClick={handleReject(idRequestDetail)}>Reject</DangerButton>
                                                     </div>
                                                 </div>
@@ -217,9 +247,28 @@ export default function Dashboard({ auth ,allTemplate , userRequests ,needApprov
                                                         <tbody>
                                                             {Object.entries(jsonObject).map(([key, value]) => (
                                                                 <tr key={key}>
-                                                                    <td className='font-bold'>{key!="follower"?inputDetailRequests[key]:'Người theo dõi'}</td>
+                                                                    <td className='font-bold'>
+                                                                        {
+                                                                            key=="follower"?
+                                                                            "Quản lý trực tiếp:":
+                                                                            key=="id_user"?
+                                                                            "Người tạo":
+                                                                            key=="id_template"?
+                                                                            "Loại đề xuất":
+                                                                            inputDetailRequests[key]
+                                                                        }
+                                                                    </td>
                                                                     <td>
-                                                                        {typeof value === 'object' ? value.file_name : value}</td>
+                                                                        {
+                                                                            key=="follower"?
+                                                                            userList[value]:
+                                                                            key=="id_user"?
+                                                                            userList[value]:
+                                                                            key=="id_template"?
+                                                                            "Đề Xuất":
+                                                                            value
+                                                                        }
+                                                                    </td>
                                                                 </tr>
                                                             ))}
                                                         </tbody>

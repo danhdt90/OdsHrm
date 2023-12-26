@@ -13,6 +13,6 @@ class UserRequestsApprover extends Model
         'id',
         'user_id',
         'order',
-        'id_user_request'
+        'id_request'
     ];
 }
