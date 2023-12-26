@@ -84,7 +84,7 @@ class UserRequestController extends Controller
                 try {
                     UserRequestsApprover::create([
                         'user_id' => $followerValue,
-                        'id_user_request' => $userRequest->id,
+                        'id_request' => $userRequest->id,
                     ]);
                 } catch (\Throwable $th) {
                     throw $th;

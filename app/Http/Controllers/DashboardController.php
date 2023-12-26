@@ -10,6 +10,7 @@ use App\Models\UserRequests;
 use App\Models\UserRequestsApprover;
 use App\Models\InputDetailRequest;
 use Illuminate\Support\Facades\Auth;
+
 class DashboardController extends Controller
 {
     public function index()
@@ -19,15 +20,19 @@ class DashboardController extends Controller
             ->join('request_templates', 'user_requests.request_template', '=', 'request_templates.id')
             ->select('user_requests.*', 'request_templates.template_name')
             ->get();
-        $needApprove = UserRequestsApprover::where('user_id', $userId)
-            ->join('user_requests', 'user_requests.id', '=', 'user_request_approver.id_request')
-            ->select('user_requests.*', 'user_request_approver.order')
-            ->get();
+
         $userList = User::pluck('name', 'id')->all();
         $allTemplate = RequestTemplate::all();
         $inputDetailRequests = InputDetailRequest::pluck('input_description', 'input_name')->all();
 
-        return Inertia::render('Dashboard', compact('allTemplate', 'userRequests','needApprove','inputDetailRequests','userList'));
+        $needApprove = UserRequestsApprover::where('user_id', $userId)
+            ->join('user_requests', 'user_requests.id', '=', 'user_request_approver.id_request')
+            ->join('users', 'users.id', '=', 'user_requests.id_user')
+            ->join('request_templates', 'user_requests.request_template', '=', 'request_templates.id')
+            ->select('user_requests.*', 'users.name as user_name', 'request_templates.template_name')
+            ->get();
+
+        return Inertia::render('Dashboard', compact('allTemplate', 'userRequests', 'needApprove', 'inputDetailRequests', 'userList'));
     }
 
 }

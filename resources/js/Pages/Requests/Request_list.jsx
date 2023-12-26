@@ -61,7 +61,7 @@ export default function Request_list({ auth ,allLeaderAdmin,userRequests }) {
                                     {userRequests.map((request, index) => (
                                         <tr key={index}>
                                             <td className="border px-4 py-2">{request.id}</td>
-                                            <td className="border px-4 py-2"><span className='font-bold'>[{request.template_name}]</span>{request.user_name}</td>
+                                            <td className="border px-4 py-2"><span className='font-bold'>[{request.template_name}]</span></td>
                                             <td className="border px-4 py-2">{request.user_name}</td>
                                             <td className="border px-4 py-2">
                                                 <select value ={request.status} onChange={handleApprover(request.id,this)}>

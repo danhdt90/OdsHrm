@@ -123,15 +123,25 @@ export default function Dashboard({ auth ,allTemplate , userRequests ,needApprov
                                                     </tr>
                                                 </thead>
                                                 <tbody>
+                                                    {console.log(needApprove)}
                                                     {needApprove.map((request, index) => (
                                                         <tr key={index}>
                                                             <td className="border px-4 py-2">{index+1}</td>
-                                                            <td className="border px-4 py-2"><span className='font-bold'>[{request.template_name}]</span></td>
-                                                            <td className="border px-4 py-2">{request.user_name}</td>
-                                                            <td className="border px-4 py-2">{request.status==0?"Chờ duyệt":request.status==1?"Đã duyệt":"Từ chối"}</td>
-                                                            <td className="border px-4 py-2">{request.created_at}</td>
                                                             <td className="border px-4 py-2">
-                                                                <PrimaryButton onClick={()=>{openDetailRequestApprover(request.content_request,request.id)}} method="get" as="button"  className="block mt-4 text-blue-500">Chi tiết</PrimaryButton></td>
+                                                                <span className='font-bold'>[{request.template_name}]</span>
+                                                            </td>
+                                                            <td className="border px-4 py-2">
+                                                                {request.user_name}
+                                                            </td>
+                                                            <td className="border px-4 py-2">
+                                                                {request.status==0?"Chờ duyệt":request.status==1?"Đã duyệt":"Từ chối"}
+                                                            </td>
+                                                            <td className="border px-4 py-2">
+                                                                {request.created_at}
+                                                            </td>
+                                                            <td className="border px-4 py-2">
+                                                                <PrimaryButton onClick={()=>{openDetailRequestApprover(request.content_request,request.id)}} method="get" as="button"  className="block mt-4 text-blue-500">Chi tiết</PrimaryButton>
+                                                            </td>
                                                         </tr>
                                                     ))}
                                                 </tbody>
