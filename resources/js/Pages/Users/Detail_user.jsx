@@ -170,8 +170,8 @@ export default function Detail_user({user,allLeaderAdmin, auth}) {
                               <dt className="font-medium text-gray-900">Direct Manager
                                 </dt>
                               <dd className="text-gray-700 sm:col-span-2">
-                                  <select onChange={(e) => setData('leader_admin', e.target.value)} name="direct_manager" className="block w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline">
-                                    <option disabled>Pick leader</option>
+                                  <select value={data.direct_manager} onChange={(e) => setData('direct_manager', e.target.value)} name="direct_manager" className="block w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline">
+                                    <option disabled>Pick Direct Manager</option>
                                     <option value="0">None</option>
                                     {allLeaderAdmin.map((leader_admin) => (
                                       <option key={leader_admin.id} value={leader_admin.id} >{leader_admin.name}</option>
