@@ -19,12 +19,14 @@ class UserRequestController extends Controller
     {
         // $userRequests = UserRequests::all();
         $allLeaderAdmin = User::whereIn('role', ['1', '99'])->get();
+        $userList = User::pluck('name', 'id')->all();
+        $inputDetailRequests = InputDetailRequest::pluck('input_description', 'input_name')->all();
 
         $userRequests = UserRequests::join('users', 'user_requests.id_user', '=', 'users.id')
             ->join('request_templates', 'user_requests.request_template', '=', 'request_templates.id')
             ->select('user_requests.*', 'users.name as user_name', 'request_templates.template_name')
             ->get();
-        return Inertia::render('Requests/Request_list', compact('userRequests','allLeaderAdmin'));
+        return Inertia::render('Requests/Request_list', compact('userRequests','allLeaderAdmin','userList','inputDetailRequests'));
     }
 
     public function add_new_request_screen(Request $request)
@@ -99,7 +101,7 @@ class UserRequestController extends Controller
     public function delete(Request $request)
     {
         $id = $request->id;
-        UserRequestsApprover::where('id_user_request', $id)->delete();
+        UserRequestsApprover::where('id_request', $id)->delete();
         $userRequest = UserRequests::find($id);
         $userRequest->delete();
         return response()->json(['status' => true]);

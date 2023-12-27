@@ -3,6 +3,7 @@ import { Head, Link } from '@inertiajs/react';
 import PrimaryButton from "@/Components/PrimaryButton";
 import Modal from "@/Components/Modal";
 import { useState } from 'react';
+import NumberInput from '@/Components/NumberInput';
 import DangerButton from '@/Components/DangerButton';
 import axios from 'axios';
 export default function Create_request({ auth ,inputDetailRequests,allLeaderAdmin,id_template,templateName}) {
@@ -82,6 +83,13 @@ export default function Create_request({ auth ,inputDetailRequests,allLeaderAdmi
                                                         })
                                                     }
                                                 </select>
+                                            </div>
+                                        ) :
+                                        /** Select người duyệt */
+                                        (input.input_type === 'number') ? (
+                                            <div className="my-6" key={index}>
+                                                <label htmlFor="">{input.input_description}</label>
+                                                <NumberInput ></NumberInput>
                                             </div>
                                         ) :
                                         // Nếu là input thông thường

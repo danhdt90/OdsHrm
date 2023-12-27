@@ -5,7 +5,7 @@ import Modal from "@/Components/Modal";
 import { useState } from 'react';
 import DangerButton from '@/Components/DangerButton';
 import axios from 'axios';
-export default function Request_list({ auth ,allLeaderAdmin,userRequests }) {
+export default function Request_list({ auth ,userRequests,userList,inputDetailRequests}) {
     const [showModalDetailRequest, setShowModalDetailRequest] = useState(false);
     const [requestDetailData, setRequestDetailData] = useState(null);
     const openModal = (request) => {
@@ -101,7 +101,31 @@ export default function Request_list({ auth ,allLeaderAdmin,userRequests }) {
                                     <tbody>
                                         {Object.entries(jsonObject).map(([key, value]) => (
                                             <tr key={key}>
-                                                <td>{typeof value === 'object' ? value.file_name : value}</td>
+                                                <td className='font-bold'>
+                                                    {
+                                                        key=="follower"?
+                                                        "Quản lý trực tiếp:":
+                                                        key=="id_user"?
+                                                        "Người tạo":
+                                                        key=="id_template"?
+                                                        "Loại đề xuất":
+                                                        inputDetailRequests[key]
+                                                    }
+                                                </td>
+                                                <td>
+                                                    {
+                                                        key=="follower"?
+                                                        userList[value]:
+                                                        key=="id_user"?
+                                                        userList[value]:
+                                                        key=="id_template"?
+                                                        value:
+                                                        typeof value === 'object'?
+                                                        <a className='text-green-500' href={value.file_path} download>
+                                                            Tải file
+                                                        </a>:value
+                                                    }
+                                                </td>
                                             </tr>
                                         ))}
 
