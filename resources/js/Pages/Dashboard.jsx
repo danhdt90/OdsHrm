@@ -123,7 +123,6 @@ export default function Dashboard({ auth ,allTemplate , userRequests ,needApprov
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    {console.log(needApprove)}
                                                     {needApprove.map((request, index) => (
                                                         <tr key={index}>
                                                             <td className="border px-4 py-2">{index+1}</td>
@@ -224,8 +223,10 @@ export default function Dashboard({ auth ,allTemplate , userRequests ,needApprov
                                                                             userList[value]:
                                                                             key=="id_template"?
                                                                             value:
-                                                                            typeof value === 'object' && value.file_path ?
-                                                                            <a className='text-green-500' href={value.file_path} download>Tải file về</a> : value
+                                                                            typeof value === 'object'?
+                                                                            <a className='text-green-500' href={value.file_path} download>
+                                                                                Tải file
+                                                                            </a>:value
                                                                         }
                                                                     </td>
                                                                 </tr>
@@ -275,9 +276,13 @@ export default function Dashboard({ auth ,allTemplate , userRequests ,needApprov
                                                                             key=="id_user"?
                                                                             userList[value]:
                                                                             key=="id_template"?
-                                                                            "Đề Xuất":
-                                                                            value
+                                                                            value:
+                                                                            typeof value === 'object'?
+                                                                            <a className='text-green-500' href={value.file_path} download>
+                                                                                Tải file
+                                                                            </a>:value
                                                                         }
+
                                                                     </td>
                                                                 </tr>
                                                             ))}
