@@ -6,6 +6,7 @@ import { useState } from 'react';
 import DangerButton from '@/Components/DangerButton';
 import axios from 'axios';
 export default function Request_list({ auth ,userRequests,userList,inputDetailRequests}) {
+    const [userRequestsData, setUserRequests] = useState(userRequests);
     const [showModalDetailRequest, setShowModalDetailRequest] = useState(false);
     const [requestDetailData, setRequestDetailData] = useState(null);
     const openModal = (request) => {
@@ -30,10 +31,20 @@ export default function Request_list({ auth ,userRequests,userList,inputDetailRe
             });
     }
     const handleDeleteRequest = (id) => {
-        return (e) => {
-            e.preventDefault();
-            console.log(id);
-        }
+
+        axios.delete(route('Delete_User_Request', { id }))
+            .then(response => {
+                // Handle response if needed
+                if (response.data.status) {
+                    // Remove the line below
+                    const updatedUserRequests = userRequests.filter(request => request.id !== id);
+                    setUserRequests(updatedUserRequests);
+                }
+            })
+            .catch(error => {
+                // Handle error if needed
+                console.log(error);
+            });
     }
     return (
         <AuthenticatedLayout
@@ -58,7 +69,7 @@ export default function Request_list({ auth ,userRequests,userList,inputDetailRe
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {userRequests.map((request, index) => (
+                                    {userRequestsData.map((request, index) => (
                                         <tr key={index}>
                                             <td className="border px-4 py-2">{request.id}</td>
                                             <td className="border px-4 py-2"><span className='font-bold'>[{request.template_name}]</span></td>
@@ -73,7 +84,7 @@ export default function Request_list({ auth ,userRequests,userList,inputDetailRe
                                             <td className="border px-4 py-2">{request.created_at}</td>
                                             <td className="border px-4 py-2">
                                                 <PrimaryButton onClick={()=>{openModal(request.content_request)}} as="button"  className="block mt-4 text-blue-500">Chi tiết</PrimaryButton>
-                                                <DangerButton onClick={handleDeleteRequest(request.id)} as="button" className="block mt-4 text-500">Xóa</DangerButton>
+                                                <DangerButton onClick={()=>handleDeleteRequest(request.id)} as="button" className="block mt-4 text-500">Xóa</DangerButton>
                                             </td>
                                         </tr>
                                     ))}

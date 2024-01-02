@@ -12,6 +12,10 @@ use App\Http\Controllers\Requests\UserRequestController;
 
 use App\Models\UserRequests;
 use App\Models\User;
+
+use App\Mail\HelloWorldEmail;
+use Illuminate\Support\Facades\Mail;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes

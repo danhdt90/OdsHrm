@@ -141,6 +141,7 @@ export default function Dashboard({ auth ,allTemplate , userRequests ,needApprov
                                                             <td className="border px-4 py-2">
                                                                 <PrimaryButton onClick={()=>{openDetailRequestApprover(request.content_request,request.id)}} method="get" as="button"  className="block mt-4 text-blue-500">Chi tiết</PrimaryButton>
                                                             </td>
+
                                                         </tr>
                                                     ))}
                                                 </tbody>

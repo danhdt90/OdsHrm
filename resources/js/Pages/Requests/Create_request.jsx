@@ -75,6 +75,7 @@ export default function Create_request({ auth ,inputDetailRequests,allLeaderAdmi
                                         (input.input_type === 'follower'||input.input_type === 'approver') ? (
                                             <div className="my-6" key={index}>
                                                 <label htmlFor="">{input.input_description}</label>
+                                                {auth.id}
                                                 <select required={input.required} name="follower" id="" className="block w-full p-2 border border-gray-300 rounded-md">
                                                     <option value="">Vui lòng chọn</option>
                                                     {
