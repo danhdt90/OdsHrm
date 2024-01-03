@@ -111,7 +111,7 @@ export default function Dashboard({ auth ,allTemplate , userRequests ,needApprov
                                             <div>
                                                 <h1 className='font-bold'>Các đề xuất cần duyệt:</h1>
                                             </div>
-                                            <table>
+                                            <table className='table w-full table-fixed border'>
                                                 <thead>
                                                     <tr>
                                                         <th className="px-4 py-2">STT</th>
@@ -151,7 +151,7 @@ export default function Dashboard({ auth ,allTemplate , userRequests ,needApprov
                                     <div className='my-5'>
                                         <h3 className='font-bold'>Các đề xuất đã tạo:</h3>
                                     </div>
-                                    <table className="table-auto">
+                                    <table className="w-full table-auto border">
                                         <thead>
                                             <tr>
                                                 <th className="px-4 py-2">STT</th>
@@ -200,11 +200,11 @@ export default function Dashboard({ auth ,allTemplate , userRequests ,needApprov
                                             const jsonObject = JSON.parse(requestDetailNeedApprover);
                                             return (
                                                 <div>
-                                                    <table>
+                                                    <table className="w-full table-auto border">
                                                         <tbody>
                                                             {Object.entries(jsonObject).map(([key, value]) => (
                                                                 <tr key={key}>
-                                                                    <td className='font-bold'>
+                                                                    <td className='font-bold border'>
                                                                         {
                                                                             key=="follower"?
                                                                             "Quản lý trực tiếp:":
@@ -215,7 +215,7 @@ export default function Dashboard({ auth ,allTemplate , userRequests ,needApprov
                                                                             inputDetailRequests[key]
                                                                         }
                                                                     </td>
-                                                                    <td className='m-3'>
+                                                                    <td className='m-3 border'>
 
                                                                         {
                                                                             key=="follower"?
@@ -255,11 +255,11 @@ export default function Dashboard({ auth ,allTemplate , userRequests ,needApprov
                                             const jsonObject = JSON.parse(requestDetailData);
                                             return (
                                                 <div>
-                                                    <table>
+                                                    <table className="w-full table-auto border">
                                                         <tbody>
                                                             {Object.entries(jsonObject).map(([key, value]) => (
                                                                 <tr key={key}>
-                                                                    <td className='font-bold'>
+                                                                    <td className='font-bold border p-2'>
                                                                         {
                                                                             key=="follower"?
                                                                             "Quản lý trực tiếp:":
@@ -270,7 +270,7 @@ export default function Dashboard({ auth ,allTemplate , userRequests ,needApprov
                                                                             inputDetailRequests[key]
                                                                         }
                                                                     </td>
-                                                                    <td>
+                                                                    <td className='border p-2'>
                                                                         {
                                                                             key=="follower"?
                                                                             userList[value]:
