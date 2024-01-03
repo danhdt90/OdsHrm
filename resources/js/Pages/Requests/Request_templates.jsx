@@ -88,12 +88,11 @@ export default function Request_templates({ auth, templates }) {
                 <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                     <div className="p-6 text-gray-900">
 
-                      <table className='table w-full table-fixed border'>
+                      <table className="table-auto w-full">
                         <thead>
                           <tr>
                             <th className="px-4 py-2">Template Name</th>
                             <th className="px-4 py-2">Created At</th>
-                            <th className="px-4 py-2">Updated At</th>
                             <th className="px-4 py-2">Actions</th>
                           </tr>
                         </thead>
@@ -102,8 +101,7 @@ export default function Request_templates({ auth, templates }) {
                             <tr key={template.id}>
                               <td className="border px-4 py-2">{template.template_name}</td>
                               <td className="border px-4 py-2">{template.created_at}</td>
-                              <td className="border px-4 py-2">{template.updated_at}</td>
-                              <td className="border px-4 py-2">
+                              <td className="">
                                 <Link
                                 href={route('Detail_request_template', template.id)}
                                 className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">

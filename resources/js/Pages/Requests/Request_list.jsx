@@ -106,8 +106,8 @@ export default function Request_list({ auth ,userRequests,userList,inputDetailRe
                         const jsonObject = JSON.parse(requestDetailData);
                         return (
                             <div className='p-8'>
-                                <div className="flex-1 bg-white rounded-lg shadow-xl mt-4 p-8">
-                                    {/* <h4 className="text-xl text-gray-900 font-bold mb-4">Thứ tự duyệt</h4>
+                                {/* <div className="flex-1 bg-white rounded-lg shadow-xl mt-4 p-8">
+                                    <h4 className="text-xl text-gray-900 font-bold mb-4">Thứ tự duyệt</h4>
                                     <div className="relative px-4">
                                         <div>
                                             <div className="absolute h-full border border-dashed border-opacity-20 border-secondary"></div>
@@ -140,10 +140,8 @@ export default function Request_list({ auth ,userRequests,userList,inputDetailRe
                                             )
                                         ))
                                         }
-                                    </div> */}
-
-
-                                </div>
+                                    </div>
+                                </div> */}
                                 <table className='table w-full table-fixed border'>
                                     <thead>
                                         <tr>
@@ -154,7 +152,7 @@ export default function Request_list({ auth ,userRequests,userList,inputDetailRe
                                     <tbody>
                                         {Object.entries(jsonObject).map(([key, value]) => (
                                             <tr key={key}>
-                                                <td className='font-bold'>
+                                                <td className='font-bold border p-2'>
                                                     {
                                                         key=="follower"?
                                                         "Quản lý trực tiếp:":
@@ -165,7 +163,7 @@ export default function Request_list({ auth ,userRequests,userList,inputDetailRe
                                                         inputDetailRequests[key]
                                                     }
                                                 </td>
-                                                <td className='m-3'>
+                                                <td className='m-3 border p-2'>
                                                     {
                                                         key=="follower"?
                                                         userList[value]:
