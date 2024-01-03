@@ -6,12 +6,16 @@ import { useState } from 'react';
 import DangerButton from '@/Components/DangerButton';
 import axios from 'axios';
 export default function Request_list({ auth ,userRequests,userList,inputDetailRequests}) {
+    const [flowApprover, setFlowApprover] = useState([]);
     const [userRequestsData, setUserRequests] = useState(userRequests);
     const [showModalDetailRequest, setShowModalDetailRequest] = useState(false);
     const [requestDetailData, setRequestDetailData] = useState(null);
-    const [requestStatus, setRequestStatus] = useState(request.status);
-    const openModal = (request) => {
+    const openModal = (request,flow_of_approvers) => {
         setRequestDetailData(request);
+        if(typeof(flow_of_approvers)==='string'){
+            flow_of_approvers = JSON.parse(flow_of_approvers);
+        };
+        setFlowApprover(flow_of_approvers);
         setShowModalDetailRequest(true);
     }
     const closeModal = () => {
@@ -71,6 +75,7 @@ export default function Request_list({ auth ,userRequests,userList,inputDetailRe
                                 </thead>
                                 <tbody>
                                     {userRequestsData.map((request, index) => (
+
                                         <tr key={index}>
                                             <td className="border px-4 py-2">{request.id}</td>
                                             <td className="border px-4 py-2"><span className='font-bold'>[{request.template_name}]</span></td>
@@ -84,7 +89,7 @@ export default function Request_list({ auth ,userRequests,userList,inputDetailRe
                                             </td>
                                             <td className="border px-4 py-2">{request.created_at}</td>
                                             <td className="border px-4 py-2">
-                                                <PrimaryButton onClick={()=>{openModal(request.content_request)}} as="button"  className="block mt-4 text-blue-500">Chi tiết</PrimaryButton>
+                                                <PrimaryButton onClick={()=>{openModal(request.content_request,request.flow_of_approvers)}} as="button"  className="block mt-4 text-blue-500">Chi tiết</PrimaryButton>
                                                 <DangerButton onClick={()=>handleDeleteRequest(request.id)} as="button" className="block mt-4 text-500">Xóa</DangerButton>
                                             </td>
                                         </tr>
@@ -96,13 +101,49 @@ export default function Request_list({ auth ,userRequests,userList,inputDetailRe
                 </div>
             </div>
             <Modal show={showModalDetailRequest} onClose={closeModal}>
-                <div className="p-6">
-                    <h2 className="font-bold">Nội dung Request</h2>
 
                     {requestDetailData && (() => {
                         const jsonObject = JSON.parse(requestDetailData);
                         return (
-                            <div>
+                            <div className='p-8'>
+                                <div className="flex-1 bg-white rounded-lg shadow-xl mt-4 p-8">
+                                    {/* <h4 className="text-xl text-gray-900 font-bold mb-4">Thứ tự duyệt</h4>
+                                    <div className="relative px-4">
+                                        <div>
+                                            <div className="absolute h-full border border-dashed border-opacity-20 border-secondary"></div>
+                                            <div className="flex items-center w-full my-6 -ml-1.5">
+                                                <div className="w-1/12 z-10">
+                                                    <div className="w-3.5 h-3.5 bg-blue-600 rounded-full"></div>
+                                                </div>
+                                                <div className="w-11/12">
+                                                    <p className="text-sm">{userList[jsonObject['follower']]}</p>
+                                                    <p className="text-xs text-gray-500">Chưa duyệt</p>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                        {
+                                        flowApprover.map((approver, index) => (
+                                            jsonObject['follower'] !== approver.user_id && (
+                                                <div key={index}>
+                                                    <div className="absolute h-full border border-dashed border-opacity-20 border-secondary"></div>
+                                                    <div className="flex items-center w-full my-6 -ml-1.5">
+                                                        <div className="w-1/12 z-10">
+                                                            <div className="w-3.5 h-3.5 bg-blue-600 rounded-full"></div>
+                                                        </div>
+                                                        <div className="w-11/12">
+                                                            <p className="text-sm">{approver.name}</p>
+                                                            <p className="text-xs text-gray-500">{approver.status ? 'Đã duyệt' : 'Chưa duyệt'}</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            )
+                                        ))
+                                        }
+                                    </div> */}
+
+
+                                </div>
                                 <table className='table-auto border-collapse'>
                                     <thead>
                                         <tr>
@@ -124,7 +165,7 @@ export default function Request_list({ auth ,userRequests,userList,inputDetailRe
                                                         inputDetailRequests[key]
                                                     }
                                                 </td>
-                                                <td>
+                                                <td className='m-3'>
                                                     {
                                                         key=="follower"?
                                                         userList[value]:
@@ -140,13 +181,11 @@ export default function Request_list({ auth ,userRequests,userList,inputDetailRe
                                                 </td>
                                             </tr>
                                         ))}
-
                                     </tbody>
                                 </table>
                             </div>
                         );
                     })()}
-                </div>
             </Modal>
         </AuthenticatedLayout>
     );

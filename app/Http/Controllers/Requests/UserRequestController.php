@@ -24,7 +24,7 @@ class UserRequestController extends Controller
 
         $userRequests = UserRequests::join('users', 'user_requests.id_user', '=', 'users.id')
             ->join('request_templates', 'user_requests.request_template', '=', 'request_templates.id')
-            ->select('user_requests.*', 'users.name as user_name', 'request_templates.template_name')
+            ->select('user_requests.*', 'users.name as user_name', 'request_templates.template_name','request_templates.flow_of_approvers')
             ->get();
         return Inertia::render('Requests/Request_list', compact('userRequests','allLeaderAdmin','userList','inputDetailRequests'));
     }
