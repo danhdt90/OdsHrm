@@ -11,7 +11,7 @@ function NumberInput( ) {
     };
 
     return (
-        <input className="block w-full p-2 border border-gray-300 rounded-md" type="text" value={value} onChange={handleChange} step={1000}/>
+        <input className="block w-full p-2 border border-gray-300 rounded-md" type="number" value={value} onChange={handleChange} step={1000}/>
     );
 }
 

@@ -13,9 +13,8 @@ export default function Create_request({ auth ,inputDetailRequests,allLeaderAdmi
         e.preventDefault();
         try {
             const formData = new FormData(e.target);
-            const response = await axios.post(route('Create_User_Request'), formData);
-
-                window.location.href = route('dashboard');
+            await axios.post(route('Create_User_Request'), formData);
+            window.location.href = route('dashboard');
 
         } catch (error) {
             console.error(error);
