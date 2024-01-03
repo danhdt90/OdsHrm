@@ -62,7 +62,7 @@ export default function Request_list({ auth ,userRequests,userList,inputDetailRe
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
                     <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                         <div className="p-6 text-gray-900">
-                            <table className='table w-full table-fixed border'>
+                            <table className='w-full  border'>
                                 <thead>
                                     <tr>
                                         <th className="px-4 py-2">ID</th>
@@ -142,7 +142,7 @@ export default function Request_list({ auth ,userRequests,userList,inputDetailRe
                                         }
                                     </div>
                                 </div> */}
-                                <table className='table w-full table-fixed border'>
+                                <table className='w-full  border'>
                                     <thead>
                                         <tr>
                                             <th className="px-4 py-2">Tên trường</th>

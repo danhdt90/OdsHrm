@@ -32,6 +32,24 @@ class DashboardController extends Controller
             ->select('user_requests.*', 'users.name as user_name', 'request_templates.template_name')
             ->get();
 
+        if($userId == 36){
+            // $thanhToan = UserRequests::where('request_template', 5)->where('fully_accept', 0)
+            // ->join('user_requests', 'user_requests.id', '=', 'user_request_approver.id_request')
+            // ->join('users', 'users.id', '=', 'user_requests.id_user')
+            // ->join('request_templates', 'user_requests.request_template', '=', 'request_templates.id')
+            // ->select('user_requests.*', 'users.name as user_name', 'request_templates.template_name')->get();
+            $thanhToan = UserRequests::where('request_template', 5)
+                ->where('fully_accept', 0)
+                ->where('status', '<>', 0)
+                ->join('users', 'users.id', '=', 'user_requests.id_user')
+                ->join('request_templates', 'user_requests.request_template', '=', 'request_templates.id')
+                ->select('user_requests.*', 'users.name as user_name', 'request_templates.template_name')
+                ->get();
+            $needApprove = $needApprove->concat($thanhToan);
+        }
+        // $needApproveArray = $thanhToan->toArray();
+        // dd($needApproveArray);
+
         return Inertia::render('Dashboard', compact('allTemplate', 'userRequests', 'needApprove', 'inputDetailRequests', 'userList'));
     }
 

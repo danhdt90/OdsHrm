@@ -149,7 +149,7 @@ return (
                             </div>
                         </form>
                     </Modal>
-                    <table className="w-full table-fixed border min-w-full divide-y-2 divide-gray-200 bg-white text-sm">
+                    <table className="w-full border min-w-full divide-y-2 divide-gray-200 bg-white text-sm">
                         <thead className="ltr:text-left rtl:text-right">
                             <tr>
                                 <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">

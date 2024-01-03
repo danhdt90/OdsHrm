@@ -47,14 +47,16 @@ export default function Dashboard({ auth ,allTemplate , userRequests ,needApprov
         }
     }
     const handleApprove = (id_request) => (event) => {
-        const field = 'status';
+
+        const field = auth.user.id === 36 ? 'fully_accept' : 'status';
+
         const field_value = 1;
         axios
             .post(route('Update_Request_Field'), { id_request, field, field_value })
             .then((response) => {
                 // Handle response if needed
                 console.log(response.data.status);
-                window.location.reload(); // Reload the page
+                // window.location.reload(); // Reload the page
             })
             .catch((error) => {
                 // Handle error if needed
@@ -111,7 +113,7 @@ export default function Dashboard({ auth ,allTemplate , userRequests ,needApprov
                                             <div>
                                                 <h1 className='font-bold'>Các đề xuất cần duyệt:</h1>
                                             </div>
-                                            <table className='table w-full table-fixed border'>
+                                            <table className='w-full border'>
                                                 <thead>
                                                     <tr>
                                                         <th className="px-4 py-2">STT</th>
@@ -133,7 +135,8 @@ export default function Dashboard({ auth ,allTemplate , userRequests ,needApprov
                                                                 {request.user_name}
                                                             </td>
                                                             <td className="border px-4 py-2">
-                                                                {request.status==0?"Chờ duyệt":request.status==1?"Đã duyệt":"Từ chối"}
+                                                            {(request.template_name== "Đề xuất thanh toán" && request.fully_accept==0)?"Chờ duyệt chi":request.status==0?"Chờ duyệt":request.status==1?"QLTT đã duyệt":"Từ chối"}
+                                                                {/* {request.status==0?"Chờ duyệt":request.status==1?"Đã duyệt":"Từ chối"} */}
                                                             </td>
                                                             <td className="border px-4 py-2">
                                                                 {request.created_at}
@@ -151,7 +154,7 @@ export default function Dashboard({ auth ,allTemplate , userRequests ,needApprov
                                     <div className='my-5'>
                                         <h3 className='font-bold'>Các đề xuất đã tạo:</h3>
                                     </div>
-                                    <table className="w-full table-auto border">
+                                    <table className="w-full border">
                                         <thead>
                                             <tr>
                                                 <th className="px-4 py-2">STT</th>
@@ -200,11 +203,11 @@ export default function Dashboard({ auth ,allTemplate , userRequests ,needApprov
                                             const jsonObject = JSON.parse(requestDetailNeedApprover);
                                             return (
                                                 <div>
-                                                    <table className="w-full table-auto border">
+                                                    <table className="w-full border">
                                                         <tbody>
                                                             {Object.entries(jsonObject).map(([key, value]) => (
                                                                 <tr key={key}>
-                                                                    <td className='font-bold border'>
+                                                                    <td className='font-bold border p-3'>
                                                                         {
                                                                             key=="follower"?
                                                                             "Quản lý trực tiếp:":
@@ -215,8 +218,7 @@ export default function Dashboard({ auth ,allTemplate , userRequests ,needApprov
                                                                             inputDetailRequests[key]
                                                                         }
                                                                     </td>
-                                                                    <td className='m-3 border'>
-
+                                                                    <td className='border p-3'>
                                                                         {
                                                                             key=="follower"?
                                                                             userList[value]:
@@ -255,7 +257,7 @@ export default function Dashboard({ auth ,allTemplate , userRequests ,needApprov
                                             const jsonObject = JSON.parse(requestDetailData);
                                             return (
                                                 <div>
-                                                    <table className="w-full table-auto border">
+                                                    <table className="w-full border">
                                                         <tbody>
                                                             {Object.entries(jsonObject).map(([key, value]) => (
                                                                 <tr key={key}>

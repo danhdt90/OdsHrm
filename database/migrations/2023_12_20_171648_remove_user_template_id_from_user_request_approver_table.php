@@ -9,10 +9,12 @@ class RemoveUserTemplateIdFromUserRequestApproverTable extends Migration
     public function up()
     {
         Schema::table('user_request_approver', function (Blueprint $table) {
-            // Xóa khóa ngoại
-            $table->dropForeign(['user_template_id']);
-            // Xóa cột 'user_template_id'
-            $table->dropColumn('user_template_id');
+            if (Schema::hasColumn('user_request_approver', 'user_template_id')) {
+                // Xóa khóa ngoại
+                $table->dropForeign(['user_template_id']);
+                // Xóa cột 'user_template_id'
+                $table->dropColumn('user_template_id');
+            }
         });
     }
 

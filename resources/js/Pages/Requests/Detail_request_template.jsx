@@ -201,7 +201,7 @@ export default function Detail_template_request({ auth,template, inputDetails ,a
                     </div>
                     <div className="p-6">
                        <h3>Danh sách Input</h3>
-                      <table className="table-auto w-full">
+                      <table className="w-full">
                         <thead>
                           <tr>
                             <th className="px-4 py-2">Name</th>
@@ -290,10 +290,10 @@ export default function Detail_template_request({ auth,template, inputDetails ,a
                       <div className="p-6">
                           <h3>Danh sách người duyệt </h3>
 
-                          <table className="table-auto">
+                          <table className="w-full">
                             <thead>
                               <tr>
-                                <th  className="px-4 py-2">Thứ tự Duyệt</th>
+                                <th className="px-4 py-2">Thứ tự Duyệt</th>
                                 <th className="px-4 py-2">User ID</th>
                                 <th className="px-4 py-2">Name</th>
                                 <th>Action</th>

@@ -88,7 +88,7 @@ export default function Request_templates({ auth, templates }) {
                 <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                     <div className="p-6 text-gray-900">
 
-                      <table className="table-auto w-full">
+                      <table className=" w-full">
                         <thead>
                           <tr>
                             <th className="px-4 py-2">Template Name</th>
