@@ -79,13 +79,16 @@ export default function Create_request({ auth ,inputDetailRequests,allLeaderAdmi
                                                     <option value="">Vui lòng chọn</option>
                                                     {
                                                         allLeaderAdmin.map((option) => {
-                                                            return <option value={option.id}>{option.name}</option>
+                                                            if (option.id !== auth.id) {
+                                                                return <option value={option.id}>{option.name}</option>
+                                                            }
+                                                            return null;
                                                         })
                                                     }
                                                 </select>
                                             </div>
                                         ) :
-                                        /** Select người duyệt */
+                                        /** Nếu là input number */
                                         (input.input_type === 'number') ? (
                                             <div className="my-6" key={index}>
                                                 <label htmlFor="">{input.input_description}</label>

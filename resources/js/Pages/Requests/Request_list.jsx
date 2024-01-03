@@ -9,6 +9,7 @@ export default function Request_list({ auth ,userRequests,userList,inputDetailRe
     const [userRequestsData, setUserRequests] = useState(userRequests);
     const [showModalDetailRequest, setShowModalDetailRequest] = useState(false);
     const [requestDetailData, setRequestDetailData] = useState(null);
+    const [requestStatus, setRequestStatus] = useState(request.status);
     const openModal = (request) => {
         setRequestDetailData(request);
         setShowModalDetailRequest(true);
@@ -75,7 +76,7 @@ export default function Request_list({ auth ,userRequests,userList,inputDetailRe
                                             <td className="border px-4 py-2"><span className='font-bold'>[{request.template_name}]</span></td>
                                             <td className="border px-4 py-2">{request.user_name}</td>
                                             <td className="border px-4 py-2">
-                                                <select value ={request.status} onChange={handleApprover(request.id,this)}>
+                                                <select value ={request.status} onChange={(event) => handleApprover(request.id, event.target.value)}>
                                                     <option value="0">Chờ duyệt</option>
                                                     <option value="1">Đã duyệt</option>
                                                     <option value="2">Từ chối</option>
