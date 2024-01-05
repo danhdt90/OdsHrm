@@ -56,7 +56,7 @@ export default function Dashboard({ auth ,allTemplate , userRequests ,needApprov
             .then((response) => {
                 // Handle response if needed
                 console.log(response.data.status);
-                // window.location.reload(); // Reload the page
+                window.location.reload(); // Reload the page
             })
             .catch((error) => {
                 // Handle error if needed

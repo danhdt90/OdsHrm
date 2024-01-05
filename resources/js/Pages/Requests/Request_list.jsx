@@ -6,7 +6,7 @@ import { useState } from 'react';
 import DangerButton from '@/Components/DangerButton';
 import axios from 'axios';
 export default function Request_list({ auth ,userRequests,userList,inputDetailRequests}) {
-    const [flowApprover, setFlowApprover] = useState([]);
+
     const [userRequestsData, setUserRequests] = useState(userRequests);
     const [showModalDetailRequest, setShowModalDetailRequest] = useState(false);
     const [requestDetailData, setRequestDetailData] = useState(null);
@@ -28,6 +28,7 @@ export default function Request_list({ auth ,userRequests,userList,inputDetailRe
         axios.post(route('Update_Request_Field'), { id_request,field, field_value })
             .then(response => {
                 // Handle response if needed
+                location.reload();
                 console.log(response.data.status);
             })
             .catch(error => {
@@ -68,7 +69,7 @@ export default function Request_list({ auth ,userRequests,userList,inputDetailRe
                                         <th className="px-4 py-2">ID</th>
                                         <th className="px-4 py-2">Tên đề xuất</th>
                                         <th className="px-4 py-2">Người tạo</th>
-                                        <th className="px-4 py-2">Trạng thái</th>
+                                        <th className="px-4 py-2">QLTT Duyệt</th>
                                         <th className="px-4 py-2">Ngày tạo</th>
                                         <th className="px-4 py-2">Chi tiết</th>
                                     </tr>
