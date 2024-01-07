@@ -6,35 +6,30 @@ import { useState } from 'react';
 import DangerButton from '@/Components/DangerButton';
 import axios from 'axios';
 export default function Request_list({ auth ,userRequests,userList,inputDetailRequests}) {
-
+    const [flowApprover,setFlowApprover] = useState([]);
+    const [statusApprover,setStatusApprover] = useState({
+        status:0,
+        fully_accept:0,
+        hr_status:0
+    });
     const [userRequestsData, setUserRequests] = useState(userRequests);
     const [showModalDetailRequest, setShowModalDetailRequest] = useState(false);
     const [requestDetailData, setRequestDetailData] = useState(null);
-    const openModal = (request,flow_of_approvers) => {
+    const openModal = (request,flow_of_approvers,status,fully_accept,hr_status) => {
         setRequestDetailData(request);
+        setStatusApprover({
+            status:status,
+            fully_accept:fully_accept,
+            hr_status:hr_status
+        });
         if(typeof(flow_of_approvers)==='string'){
             flow_of_approvers = JSON.parse(flow_of_approvers);
+            setFlowApprover(flow_of_approvers);
         };
-        setFlowApprover(flow_of_approvers);
         setShowModalDetailRequest(true);
     }
     const closeModal = () => {
         setShowModalDetailRequest(false);
-    }
-
-    const handleApprover = (id_request) => (event) => {
-        const field = 'status';
-        const field_value = event.target.value;
-        axios.post(route('Update_Request_Field'), { id_request,field, field_value })
-            .then(response => {
-                // Handle response if needed
-                location.reload();
-                console.log(response.data.status);
-            })
-            .catch(error => {
-                // Handle error if needed
-                console.log(error);
-            });
     }
     const handleDeleteRequest = (id) => {
 
@@ -67,30 +62,35 @@ export default function Request_list({ auth ,userRequests,userList,inputDetailRe
                                 <thead>
                                     <tr>
                                         <th className="px-4 py-2">ID</th>
-                                        <th className="px-4 py-2">Tên đề xuất</th>
+                                        <th className="px-4 py-2">Loại đề xuất</th>
+                                        <th className="px-4 py-2">Tiêu đề</th>
                                         <th className="px-4 py-2">Người tạo</th>
                                         <th className="px-4 py-2">QLTT Duyệt</th>
+                                        <th className="px-4 py-2">CEO Duyệt</th>
                                         <th className="px-4 py-2">Ngày tạo</th>
                                         <th className="px-4 py-2">Chi tiết</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     {userRequestsData.map((request, index) => (
-
                                         <tr key={index}>
                                             <td className="border px-4 py-2">{request.id}</td>
-                                            <td className="border px-4 py-2"><span className='font-bold'>[{request.template_name}]</span></td>
+                                            <td className="border px-4 py-2"><span className='font-bold'>{request.template_name}</span></td>
+                                            <td className="border px-4 py-2"><span>{request.request_name}</span></td>
                                             <td className="border px-4 py-2">{request.user_name}</td>
                                             <td className="border px-4 py-2">
-                                                <select value ={request.status} onChange={(event) => handleApprover(request.id, event.target.value)}>
-                                                    <option value="0">Chờ duyệt</option>
-                                                    <option value="1">Đã duyệt</option>
-                                                    <option value="2">Từ chối</option>
-                                                </select>
+                                                {request.status === 0 && <span className='text-yellow-500 '>Chờ duyệt</span>}
+                                                {request.status === 1 && <span className='text-green-500 '>Đã duyệt</span>}
+                                                {request.status === 2 && <span className='text-red-500 '>Từ chối</span>}
+                                            </td>
+                                            <td className="border px-4 py-2">
+                                                {request.fully_accept === 0 && <span className='text-yellow-500 font-bold'>Chờ duyệt</span>}
+                                                    {request.fully_accept === 1 && <span className='text-green-500 font-bold'>Đã duyệt</span>}
+                                                    {request.fully_accept === 2 && <span className='text-red-500 font-bold'>Từ chối</span>}
                                             </td>
                                             <td className="border px-4 py-2">{request.created_at}</td>
                                             <td className="border px-4 py-2">
-                                                <PrimaryButton onClick={()=>{openModal(request.content_request,request.flow_of_approvers)}} as="button"  className="block mt-4 text-blue-500">Chi tiết</PrimaryButton>
+                                                <PrimaryButton onClick={()=>{openModal(request.content_request,request.flow_of_approvers,request.status,request.fully_accept,request.hr_status)}} as="button"  className="block mt-4 text-blue-500">Chi tiết</PrimaryButton>
                                                 <DangerButton onClick={()=>handleDeleteRequest(request.id)} as="button" className="block mt-4 text-500">Xóa</DangerButton>
                                             </td>
                                         </tr>
@@ -107,43 +107,44 @@ export default function Request_list({ auth ,userRequests,userList,inputDetailRe
                         const jsonObject = JSON.parse(requestDetailData);
                         return (
                             <div className='p-8'>
-                                {/* <div className="flex-1 bg-white rounded-lg shadow-xl mt-4 p-8">
+                                <div className="flex-1 bg-white rounded-lg mt-4">
                                     <h4 className="text-xl text-gray-900 font-bold mb-4">Thứ tự duyệt</h4>
                                     <div className="relative px-4">
                                         <div>
                                             <div className="absolute h-full border border-dashed border-opacity-20 border-secondary"></div>
-                                            <div className="flex items-center w-full my-6 -ml-1.5">
-                                                <div className="w-1/12 z-10">
-                                                    <div className="w-3.5 h-3.5 bg-blue-600 rounded-full"></div>
-                                                </div>
-                                                <div className="w-11/12">
-                                                    <p className="text-sm">{userList[jsonObject['follower']]}</p>
-                                                    <p className="text-xs text-gray-500">Chưa duyệt</p>
-                                                </div>
-
-                                            </div>
-                                        </div>
-                                        {
-                                        flowApprover.map((approver, index) => (
-                                            jsonObject['follower'] !== approver.user_id && (
+                                            {flowApprover.map((approver, index) => (
                                                 <div key={index}>
-                                                    <div className="absolute h-full border border-dashed border-opacity-20 border-secondary"></div>
                                                     <div className="flex items-center w-full my-6 -ml-1.5">
                                                         <div className="w-1/12 z-10">
-                                                            <div className="w-3.5 h-3.5 bg-blue-600 rounded-full"></div>
+                                                            <div className="w-3.5 h-3.5 bg-green-600 rounded-full">
+                                                            </div>
                                                         </div>
                                                         <div className="w-11/12">
-                                                            <p className="text-sm">{approver.name}</p>
-                                                            <p className="text-xs text-gray-500">{approver.status ? 'Đã duyệt' : 'Chưa duyệt'}</p>
+                                                            <p className="text-sm">
+                                                                {approver.user_id === "qltt" ? "Quản lý trực tiếp" : approver.user_id === "hr" ? "HR Manager" : approver.user_id === "ceo" ? "CEO" : approver.user_id}
+                                                            </p>
+                                                            <p className="text-xs text-gray-500">
+                                                                {approver.user_id === "qltt" ?
+                                                                    statusApprover.status === 1 ? "Đã duyệt" :
+                                                                    statusApprover.status === 2 ? "Từ chối" :
+                                                                    "Chờ duyệt" :
+                                                                approver.user_id === "hr" ?
+                                                                    statusApprover.hr_status === 1 ? "Đã duyệt" :
+                                                                    statusApprover.hr_status === 2 ? "Từ chối" :
+                                                                    "Chờ duyệt" :
+                                                                approver.user_id === "ceo" ?
+                                                                    statusApprover.fully_accept === 1 ? "Đã duyệt" :
+                                                                    statusApprover.fully_accept === 2 ? "Từ chối" :
+                                                                    "Chờ duyệt" : ""}
+                                                            </p>
                                                         </div>
                                                     </div>
                                                 </div>
-                                            )
-                                        ))
-                                        }
+                                            ))}
+                                        </div>
                                     </div>
-                                </div> */}
-                                <table className='w-full  border'>
+                                </div>
+                                <table className='w-full border'>
                                     <thead>
                                         <tr>
                                             <th className="px-4 py-2">Tên trường</th>
@@ -152,6 +153,7 @@ export default function Request_list({ auth ,userRequests,userList,inputDetailRe
                                     </thead>
                                     <tbody>
                                         {Object.entries(jsonObject).map(([key, value]) => (
+
                                             <tr key={key}>
                                                 <td className='font-bold border p-2'>
                                                     {
@@ -160,7 +162,9 @@ export default function Request_list({ auth ,userRequests,userList,inputDetailRe
                                                         key=="id_user"?
                                                         "Người tạo":
                                                         key=="id_template"?
-                                                        "Loại đề xuất":
+                                                        null:
+                                                        key=="request_name"?
+                                                        "Tiêu đề":
                                                         inputDetailRequests[key]
                                                     }
                                                 </td>
@@ -171,9 +175,9 @@ export default function Request_list({ auth ,userRequests,userList,inputDetailRe
                                                         key=="id_user"?
                                                         userList[value]:
                                                         key=="id_template"?
-                                                        value:
+                                                        null:
                                                         typeof value === 'object'?
-                                                        <a className='text-green-500' href={value.file_path} download>
+                                                        <a className='text-green-500 font-bold' href={value.file_path} download>
                                                             Tải file
                                                         </a>:value
                                                     }

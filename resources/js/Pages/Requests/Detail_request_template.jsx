@@ -260,6 +260,9 @@ export default function Detail_template_request({ auth,template, inputDetails ,a
                               <InputLabel htmlFor="leader_id" value="Chọn người duyệt" />
                               <InputError message={errors.leader_id} className="mt-2" />
                              <select name="leader_admin">
+                                <option value="qltt">Quản lý trực tiếp</option>
+                                <option value="hr">Nhân sự</option>
+                                <option value="ceo">CEO</option>
                                 {allLeaderAdmin.map((leader) => (
                                   <option key={leader.id} value={leader.id+'_'+leader.name}>{leader.name}</option>
                                 ))}

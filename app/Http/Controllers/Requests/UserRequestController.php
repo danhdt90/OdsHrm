@@ -25,6 +25,7 @@ class UserRequestController extends Controller
         $userRequests = UserRequests::join('users', 'user_requests.id_user', '=', 'users.id')
             ->join('request_templates', 'user_requests.request_template', '=', 'request_templates.id')
             ->select('user_requests.*', 'users.name as user_name', 'request_templates.template_name','request_templates.flow_of_approvers')
+            ->orderBy('user_requests.id', 'DESC')
             ->get();
         return Inertia::render('Requests/Request_list', compact('userRequests','allLeaderAdmin','userList','inputDetailRequests'));
     }
@@ -32,11 +33,12 @@ class UserRequestController extends Controller
     public function add_new_request_screen(Request $request)
     {
         $id_template = $request->id_template;
-
+        $request_template = RequestTemplate::find($id_template);
         // $inputDetails = InputDetailRequest::find($id_template);
         $inputDetailRequests = InputDetailRequest::where('id_request_templates', $id_template)->get();
         $allLeaderAdmin = User::whereIn('role', ['1', '99'])->get();
-        return Inertia::render('Requests/Create_request', compact('inputDetailRequests','allLeaderAdmin','id_template'));
+        $userList = User::pluck('name', 'id')->all();
+        return Inertia::render('Requests/Create_request', compact('inputDetailRequests','allLeaderAdmin','id_template','userList','request_template'));
     }
     public function update_request_field(Request $request)
     {
@@ -56,7 +58,13 @@ class UserRequestController extends Controller
     {
         // Get the input values
             $requestAll = $request->all();
-            // Xử lý file
+             // Tách request_name và category_id ra khỏi $requestAll
+            $requestName = $requestAll['request_name'];
+            $categoryId = $requestAll['category_id'];
+            // Xóa request_name và category_id khỏi $requestAll
+            unset($requestAll['request_name']);
+            unset($requestAll['category_id']);
+                    // Xử lý file
             $uploadedFiles = [];
             if ($request->allFiles()) {
                 $allFiles = $request->allFiles();
@@ -70,12 +78,12 @@ class UserRequestController extends Controller
                     ];
                 }
             }
-
-
             $json_data = json_encode($requestAll, JSON_UNESCAPED_UNICODE);
             // Lưu vào cơ sở dữ liệu
 
             $userRequest = UserRequests::create([
+                'request_name'=>$requestName,
+                'category_id'=>$categoryId,
                 'id_user' => $request->id_user,
                 'request_template' => $request->id_template,
                 'content_request' => $json_data,

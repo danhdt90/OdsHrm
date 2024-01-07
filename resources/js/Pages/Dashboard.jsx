@@ -46,7 +46,7 @@ export default function Dashboard({ auth ,allTemplate , userRequests ,needApprov
             });
         }
     }
-    const handleApprove = (id_request) => (event) => {
+    const handleApprove = (id_request) => () => {
 
         const field = auth.user.id === 36 ? 'fully_accept' : 'status';
 
@@ -63,8 +63,8 @@ export default function Dashboard({ auth ,allTemplate , userRequests ,needApprov
                 console.log(error);
             });
     };
-    const handleReject = (id_request)=>(event) => {
-        const field = 'status';
+    const handleReject = (id_request)=>() => {
+        const field = auth.user.id === 36 ? 'fully_accept' : 'status';
         const field_value = 2;
         axios.post(route('Update_Request_Field'), { id_request,field, field_value })
             .then(response => {
@@ -159,7 +159,7 @@ export default function Dashboard({ auth ,allTemplate , userRequests ,needApprov
                                             <tr>
                                                 <th className="px-4 py-2">STT</th>
                                                 <th className="px-4 py-2">Request Name</th>
-                                                <th className="px-4 py-2">Status</th>
+                                                <th className="px-4 py-2">Quản lý trực tiếp</th>
                                                 <th className="px-4 py-2">Ngày tạo</th>
                                                  <th className="px-4 py-2">Chi tiết</th>
                                             </tr>
@@ -170,7 +170,8 @@ export default function Dashboard({ auth ,allTemplate , userRequests ,needApprov
                                                     <td className="border px-4 py-2">{index+1}</td>
                                                     <td className="border px-4 py-2"><span className='font-bold'>[{request.template_name}]</span>{request.user_name}</td>
                                                     <td className="border px-4 py-2">
-                                                        {request.status==0?"Chờ duyệt":request.status==1?"Đã duyệt":"Từ chối"}
+                                                        {(auth.user.role ==1 || auth.user.role ==99) ? (request.fully_accept==0?"Chờ duyệt":request.fully_accept==1?"Đã duyệt":"Từ chối"):""}
+                                                        {(auth.user.role !=1 && auth.user.role !=99) ? (request.status==0?"Chờ duyệt":request.status==1?"Đã duyệt":"Từ chối"):null}
                                                     </td>
                                                     <td className="border px-4 py-2">{request.created_at}</td>
                                                     <td className="border px-4 py-2">
@@ -187,11 +188,12 @@ export default function Dashboard({ auth ,allTemplate , userRequests ,needApprov
 
                             <Modal show={showModalNewRequest} onClose={closeModal}>
                                 <div className="p-6">
-                                    <h3>Add new request</h3>
+                                    <h3 className='font-bold'>Add new request</h3>
                                     <hr />
                                     {allTemplate.map((template, index) => (
                                         <Link key={index} method="get" as="button" href={route("Create_User_Request_Screen")} data={{ id_template: template.id }} className="block mt-4 text-blue-500">{template.template_name}</Link>
                                     ))}
+
                                 </div>
                             </Modal>
                             <Modal show={showDetailRequestApprover} onClose={closeDetailRequestApprover}>
@@ -285,7 +287,6 @@ export default function Dashboard({ auth ,allTemplate , userRequests ,needApprov
                                                                                 Tải file
                                                                             </a>:value
                                                                         }
-
                                                                     </td>
                                                                 </tr>
                                                             ))}

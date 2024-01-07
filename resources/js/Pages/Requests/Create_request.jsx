@@ -6,9 +6,7 @@ import { useState } from 'react';
 import NumberInput from '@/Components/NumberInput';
 import DangerButton from '@/Components/DangerButton';
 import axios from 'axios';
-export default function Create_request({ auth ,inputDetailRequests,allLeaderAdmin,id_template,templateName}) {
-
-
+export default function Create_request({ auth ,inputDetailRequests,allLeaderAdmin,id_template,templateName,userList,request_template }) {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
@@ -33,14 +31,15 @@ export default function Create_request({ auth ,inputDetailRequests,allLeaderAdmi
                         <div className="p-6 text-gray-900">
                             <h1 className="">Tạo mới đề xuất: </h1>
                            <hr />
-                           <div className="bg-white">
-
-                           </div>
                            <div className="p-6">
                             <form onSubmit={handleSubmit} method='POST' encType="multipart/form-data">
                                 <input type="hidden" name="id_user" value={auth.user.id} />
+                                <input type="hidden" name="category_id" value={request_template.user_request_category} />
                                 <input type="hidden" name="id_template" value={id_template} />
-
+                                <div className="my-6">
+                                    <label htmlFor="">Tiêu đề</label>
+                                    <input required="" type="text" name="request_name" id="" placeholder="" className="block w-full p-2 border border-gray-300 rounded-md" />
+                                </div>
                                 {
                                    inputDetailRequests.map((input, index) =>
                                         input.input_type === 'select' ? (
@@ -73,9 +72,8 @@ export default function Create_request({ auth ,inputDetailRequests,allLeaderAdmi
                                         /** Select người duyệt */
                                         (input.input_type === 'follower'||input.input_type === 'approver') ? (
                                             <div className="my-6" key={index}>
-                                                <label htmlFor="">{input.input_description}</label>
-                                                {auth.id}
-                                                <select required={input.required} name="follower" id="" className="block w-full p-2 border border-gray-300 rounded-md">
+                                                <label htmlFor={input.input_name}>{input.input_description}</label>
+                                                {/* <select required={input.required} name="follower" id="" className="block w-full p-2 border border-gray-300 rounded-md">
                                                     <option value="">Vui lòng chọn</option>
                                                     {
                                                         allLeaderAdmin.map((option) => {
@@ -85,7 +83,20 @@ export default function Create_request({ auth ,inputDetailRequests,allLeaderAdmi
                                                             return null;
                                                         })
                                                     }
-                                                </select>
+                                                </select> */}
+                                                {auth.user.direct_manager && (
+                                                    <div className="my-6" key={index}>
+                                                        <input type='hidden' name="follower"value={auth.user.direct_manager} />
+                                                        <input
+                                                            type="text"
+                                                            name={input.input_name}
+                                                            value={userList[auth.user.direct_manager]}
+                                                            className="block w-full p-2 border border-gray-300 rounded-md"
+                                                            readOnly
+                                                            disabled
+                                                        />
+                                                    </div>
+                                                )}
                                             </div>
                                         ) :
                                         /** Nếu là input number */
@@ -98,8 +109,8 @@ export default function Create_request({ auth ,inputDetailRequests,allLeaderAdmi
                                         // Nếu là input thông thường
                                         (
                                             <div className="my-6" key={index}>
-                                                <label htmlFor="">{input.input_description}</label>
-                                                <input required={input.required} type={input.input_type} name={input.input_name} id="" placeholder={input.placeholder} className="block w-full p-2 border border-gray-300 rounded-md" />
+                                                <label htmlFor={input.input_name}>{input.input_description}</label>
+                                                <input required={input.required} type={input.input_type} name={input.input_name} id={input.input_name} placeholder={input.placeholder} className="block w-full p-2 border border-gray-300 rounded-md" />
                                             </div>
                                         )
                                     )
