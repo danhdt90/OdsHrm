@@ -51,4 +51,7 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(UserTemplate::class)->withPivot('order')->withTimestamps();
     }
+    public function directManager() {
+        return $this->belongsTo(User::class, 'direct_manager');
+    }
 }

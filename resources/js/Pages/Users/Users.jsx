@@ -198,10 +198,10 @@ return (
                                     <td>
                                         <p className="">
                                             {
-                                                (user.direct_manager)?
+                                                (user.directManager )?
                                                 <span
                                                 className="whitespace-nowrap rounded-full bg-purple-100 px-2.5 py-0.5 text-sm text-purple-700"
-                                                > {user.direct_manager}</span>
+                                                > {user.directManager }</span>
                                                 :'Unknown'
                                             }
                                         </p>

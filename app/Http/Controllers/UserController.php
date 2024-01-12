@@ -15,7 +15,8 @@ class UserController extends Controller
     public function index()
     {
         // Retrieve all users from database
-        $users = User::all();
+        $users = User::with('directManager')->get();
+
         // Return view with users data
         return Inertia::render('Users/Users', ['users' => $users]);
     }
