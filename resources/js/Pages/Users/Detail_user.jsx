@@ -6,6 +6,11 @@ import { Head,useForm } from '@inertiajs/react';
 export default function Detail_user({user,allLeaderAdmin, auth}) {
     const updateUser = (e) => {
       e.preventDefault();
+      let postData = data;
+      if(data.password ===''){
+        const {password,...rest}=data;
+        postData = rest;
+      }
       post(route('Update_users',{id:user.id}),{
           preserveScroll: true,
           onSuccess: () => {
