@@ -5,17 +5,26 @@ import TextInput from '@/Components/TextInput';
 import { Head,useForm } from '@inertiajs/react';
 export default function Detail_user({user,allLeaderAdmin, auth}) {
     const updateUser = (e) => {
-      e.preventDefault();
-      post(route('Update_users',{id:user.id}),{
+        e.preventDefault();
+
+        // Tạo một bản sao của dữ liệu form
+        const updatedData = { ...data };
+
+        // Nếu mật khẩu không được nhập, loại bỏ nó khỏi dữ liệu form
+        if (!updatedData.password) {
+          delete updatedData.password;
+        }
+
+        post(route('Update_users', { id: user.id }), updatedData, {
           preserveScroll: true,
           onSuccess: () => {
             console.log('ok');
           },
           onError: (errors) => {
-              console.log(errors);
+            console.log(errors);
           },
-      });
-    }
+        });
+      }
     const {
       data, setData, errors, post, reset, processing ,progress
     } =

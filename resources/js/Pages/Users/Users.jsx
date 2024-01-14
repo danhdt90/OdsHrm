@@ -201,9 +201,7 @@ return (
                                         <Link href={'users/detail/'+user.id} as="button" className="inline-flex items-center py-2 px-3 text-sm font-medium text-center text-gray-700 bg-gray-200 rounded-lg hover:bg-gray-300 hover:text-gray-900 hover:scale-[1.02] transition-all">
                                         Edit user
                                         </Link>
-
                                         <Link href="users/delete" as="button" method="post" data={{ id: user.id }} className="inline-flex items-center py-2 px-3 text-sm font-medium text-center text-white bg-gradient-to-br from-red-400 to-red-600 rounded-lg shadow-md shadow-gray-300 hover:scale-[1.02] transition-transform" >Delete user</Link>
-
                                     </td>
                                 </tr>
                             ))}
