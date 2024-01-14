@@ -7,7 +7,7 @@ function NumberInput( ) {
         let value = event.target.value;
         value = value.replace(/,/g, ""); // remove existing commas
         if (!isNaN(value) && value.trim() !== "") {
-            value = parseInt(value).toLocaleString(); // convert to string with commas
+            value = parseInt(value).toLocaleString('en-US'); // convert to string with commas
         }
         setValue(value);
     };

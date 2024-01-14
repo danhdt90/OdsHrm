@@ -195,7 +195,17 @@ return (
 
                                     </td>
 
-                                    <td></td>
+                                    <td>
+                                        <p className="">
+                                            {
+                                                (user.directManager )?
+                                                <span
+                                                className="whitespace-nowrap rounded-full bg-purple-100 px-2.5 py-0.5 text-sm text-purple-700"
+                                                > {user.directManager }</span>
+                                                :'Unknown'
+                                            }
+                                        </p>
+                                    </td>
 
                                     <td className="p-4 space-x-2 whitespace-nowrap lg:p-5">
                                         <Link href={'users/detail/'+user.id} as="button" className="inline-flex items-center py-2 px-3 text-sm font-medium text-center text-gray-700 bg-gray-200 rounded-lg hover:bg-gray-300 hover:text-gray-900 hover:scale-[1.02] transition-all">

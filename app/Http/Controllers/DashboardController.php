@@ -35,7 +35,15 @@ class DashboardController extends Controller
             ->join('request_templates', 'user_requests.request_template', '=', 'request_templates.id')
             ->select('user_requests.*', 'request_templates.template_name','users.name as user_name')
             ->get();
-
+        if($userId==36){// Dành cho các request mà các qltt đã duyệt cần sếp duyệt
+            $needFullyAccept = UserRequests::where('status', 1)
+                ->where('fully_accept',0)
+                ->join('users', 'users.id', '=', 'user_requests.id_user')
+                ->join('request_templates', 'user_requests.request_template', '=', 'request_templates.id')
+                ->select('user_requests.*', 'request_templates.template_name','users.name as user_name')
+                ->get();
+            $needApprove = $needApprove->concat($needFullyAccept);
+        }
         return Inertia::render('Dashboard', compact('allTemplate', 'userRequests', 'needApprove', 'inputDetailRequests', 'userList'));
     }
 

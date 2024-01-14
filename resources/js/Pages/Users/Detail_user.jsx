@@ -5,6 +5,7 @@ import TextInput from '@/Components/TextInput';
 import { Head,useForm } from '@inertiajs/react';
 export default function Detail_user({user,allLeaderAdmin, auth}) {
     const updateUser = (e) => {
+<<<<<<< HEAD
         e.preventDefault();
 
         // Tạo một bản sao của dữ liệu form
@@ -16,6 +17,15 @@ export default function Detail_user({user,allLeaderAdmin, auth}) {
         }
 
         post(route('Update_users', { id: user.id }), updatedData, {
+=======
+      e.preventDefault();
+      let postData = data;
+      if(data.password ===''){
+        const {password,...rest}=data;
+        postData = rest;
+      }
+      post(route('Update_users',{id:user.id}),{
+>>>>>>> 0ff1ba6ea04c2a8b32e3bc4ca73ce951a2eb382d
           preserveScroll: true,
           onSuccess: () => {
             console.log('ok');
