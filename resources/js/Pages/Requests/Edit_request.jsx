@@ -102,7 +102,7 @@ export default function Edit_request({ auth ,inputDetailRequests,id_template,tem
                                         (input.input_type === 'number') ? (
                                             <div className="my-6" key={index}>
                                                 <label htmlFor="">{input.input_description}</label>
-                                                <NumberInput ></NumberInput>
+                                                <NumberInput name={input.input_name}></NumberInput>
                                             </div>
                                         ) :
                                         // Nếu là input thông thường
