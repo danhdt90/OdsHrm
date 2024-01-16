@@ -12,7 +12,6 @@ export default function Dashboard({ auth ,allTemplate , userRequests ,needApprov
     const closeModal = () => {
         setShowModalNewRequest(false);
     }
-
     const [showModalDetailRequest, setShowModalDetailRequest] = useState(false);
     const [requestDetailData, setRequestDetailData] = useState(null);
     const openModalDetailRequest = (request,id_request) => {

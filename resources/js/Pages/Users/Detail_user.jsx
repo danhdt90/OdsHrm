@@ -17,10 +17,10 @@ export default function Detail_user({user,allLeaderAdmin, auth}) {
             console.log('ok');
           },
           onError: (errors) => {
-              console.log(errors);
+            console.log(errors);
           },
-      });
-    }
+        });
+      }
     const {
       data, setData, errors, post, reset, processing ,progress
     } =

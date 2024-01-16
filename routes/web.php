@@ -57,6 +57,7 @@ Route::middleware(['auth'])->group(function () {
     Route::prefix('/user_requests')->group(function () {
         Route::get('/', [UserRequestController::class, 'index'])->name('Request_list');
         Route::get('/detail/{id}', [UserRequestController::class, 'view'])->name('Request_Detail_Screen');
+        Route::get('/edit/{id}', [UserRequestController::class, 'update_request_screen'])->name('Edit_Detail_Screen');
         Route::get('/create', [UserRequestController::class, 'add_new_request_screen'])->name('Create_User_Request_Screen');
         Route::post('/create-user-request', [UserRequestController::class, 'create'])->name('Create_User_Request');
         Route::post('/update-request-field', [UserRequestController::class, 'update_request_field'])->name('Update_Request_Field');
