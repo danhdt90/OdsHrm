@@ -166,7 +166,7 @@ export default function Dashboard({ auth ,allTemplate , userRequests ,needApprov
                                             {userRequests.map((request, index) => (
                                                 <tr key={index}>
                                                     <td className="border px-4 py-2">{index+1}</td>
-                                                    <td className="border px-4 py-2"><span className='font-bold'>[{request.template_name}]</span>{request.user_name}</td>
+                                                    <td className="border px-4 py-2"><span className='font-bold'>{request.request_name}</span>{request.user_name}</td>
                                                     <td className="border px-4 py-2">
                                                         {(auth.user.role ==1 || auth.user.role ==99) ? (request.fully_accept==0?"Chờ duyệt":request.fully_accept==1?"Đã duyệt":"Từ chối"):""}
                                                         {(auth.user.role !=1 && auth.user.role !=99) ? (request.status==0?"Chờ duyệt":request.status==1?"Đã duyệt":"Từ chối"):null}
