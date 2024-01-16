@@ -102,7 +102,6 @@ export default function Request_list({ auth ,userRequests,userList,inputDetailRe
                 </div>
             </div>
             <Modal show={showModalDetailRequest} onClose={closeModal}>
-
                     {requestDetailData && (() => {
                         const jsonObject = JSON.parse(requestDetailData);
                         return (

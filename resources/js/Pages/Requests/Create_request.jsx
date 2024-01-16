@@ -103,7 +103,7 @@ export default function Create_request({ auth ,inputDetailRequests,allLeaderAdmi
                                         (input.input_type === 'number') ? (
                                             <div className="my-6" key={index}>
                                                 <label htmlFor="">{input.input_description}</label>
-                                                <NumberInput ></NumberInput>
+                                                <NumberInput name={input.name}></NumberInput>
                                             </div>
                                         ) :
                                         // Nếu là input thông thường

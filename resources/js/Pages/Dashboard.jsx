@@ -6,7 +6,6 @@ import { useState } from 'react';
 import DangerButton from '@/Components/DangerButton';
 export default function Dashboard({ auth ,allTemplate , userRequests ,needApprove, inputDetailRequests, userList}) {
     const [showModalNewRequest, setShowModalNewRequest] = useState(false);
-
     const openModal = () => {
         setShowModalNewRequest(true);
     }
@@ -129,7 +128,7 @@ export default function Dashboard({ auth ,allTemplate , userRequests ,needApprov
                                                         <tr key={index}>
                                                             <td className="border px-4 py-2">{index+1}</td>
                                                             <td className="border px-4 py-2">
-                                                                <span className='font-bold'>[{request.template_name}]</span>
+                                                                <span className='font-bold'>[{request.request_name}]</span>
                                                             </td>
                                                             <td className="border px-4 py-2">
                                                                 {request.user_name}

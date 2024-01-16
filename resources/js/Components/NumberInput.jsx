@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-function NumberInput( ) {
+function NumberInput({name} ) {
     const [value, setValue] = useState('');
 
     const handleChange = (event) => {
@@ -13,7 +13,7 @@ function NumberInput( ) {
     };
 
     return (
-        <input className="block w-full p-2 border border-gray-300 rounded-md" type="text" value={value} onChange={handleChange} step={1000}/>
+        <input name={name} className="block w-full p-2 border border-gray-300 rounded-md" type="text" value={value} onChange={handleChange} step={1000}/>
     );
 }
 
