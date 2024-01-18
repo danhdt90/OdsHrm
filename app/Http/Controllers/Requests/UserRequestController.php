@@ -69,7 +69,13 @@ class UserRequestController extends Controller
     }
     public function update_request_field(Request $request)
     {
-        //TODO: viết hàm cập nhập request
+        $requestAll = $request->all();
+        $id_request = $requestAll['id_request'];
+        $field = $requestAll['field'];
+        $field_value = $requestAll['field_value'];
+        $userRequest = UserRequests::find($id_request);
+        $userRequest->$field = $field_value;
+        $userRequest->save();
     }
     public function create(Request $request)
     {

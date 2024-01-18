@@ -53,7 +53,7 @@ export default function Dashboard({ auth ,allTemplate , userRequests ,needApprov
             .post(route('Update_Request_Field'), { id_request, field, field_value })
             .then((response) => {
                 // Handle response if needed
-                console.log(response.data.status);
+                console.log(response);
                 window.location.reload(); // Reload the page
             })
             .catch((error) => {
