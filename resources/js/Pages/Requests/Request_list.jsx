@@ -34,20 +34,22 @@ export default function Request_list({ auth ,userRequests,userList,inputDetailRe
         setShowModalDetailRequest(false);
     }
     const handleDeleteRequest = (id) => {
-
-        axios.delete(route('Delete_User_Request', { id }))
-            .then(response => {
-                // Handle response if needed
-                if (response.data.status) {
-                    // Remove the line below
-                    const updatedUserRequests = userRequests.filter(request => request.id !== id);
-                    setUserRequests(updatedUserRequests);
-                }
-            })
-            .catch(error => {
-                // Handle error if needed
-                console.log(error);
-            });
+        const confirmed = window.confirm("Are you sure you want to delete this request?");
+        if (confirmed) {
+            axios.delete(route('Delete_User_Request', { id }))
+                .then(response => {
+                    // Handle response if needed
+                    if (response.data.status) {
+                        // Remove the line below
+                        const updatedUserRequests = userRequests.filter(request => request.id !== id);
+                        setUserRequests(updatedUserRequests);
+                    }
+                })
+                .catch(error => {
+                    // Handle error if needed
+                    console.log(error);
+                });
+        }
     }
     return (
         <AuthenticatedLayout
@@ -93,7 +95,7 @@ export default function Request_list({ auth ,userRequests,userList,inputDetailRe
                                             <td className="border px-4 py-2">{request.created_at}</td>
                                             <td className="border px-4 py-2">
                                                 <div className="flex flex-col space-y-4">
-                                                    <div class="flex overflow-hidden bg-white border divide-x rounded-lg rtl:flex-row-reverse">
+                                                    <div className="flex overflow-hidden bg-white border divide-x rounded-lg rtl:flex-row-reverse">
                                                         <PrimaryButton onClick={() => { openModal(request.content_request, request.flow_of_approvers, request.status, request.fully_accept, request.hr_status) }} as="button" className="text-blue-500">Chi tiết</PrimaryButton>
                                                         <Link className="text-blue-500 p-6 bg-yellow" href={route('Edit_Detail_Screen',{id:request.id})} as="button">Sửa</Link>
                                                         <DangerButton onClick={() => handleDeleteRequest(request.id)} as="button" className="text-500">Xóa</DangerButton>

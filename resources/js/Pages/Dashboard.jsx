@@ -35,6 +35,10 @@ export default function Dashboard({ auth ,allTemplate , userRequests ,needApprov
         setShowDetailRequestApprover(false);
     }
     const handleDeleteRequest = (id) => {
+        let confirm = confirm("Are you sure to delete this request?");
+        if(!confirm){
+            return;
+        }
         return () => {
             axios.delete(route('Delete_User_Request', id)).then(response => {
                 console.log(response.data);
@@ -47,8 +51,11 @@ export default function Dashboard({ auth ,allTemplate , userRequests ,needApprov
     const handleApprove = (id_request) => () => {
 
         const field = auth.user.id === 36 ? 'fully_accept' : 'status';
-
         const field_value = 1;
+        let confirm = confirm("Xác nhận duyệt đề xuất?");
+        if(!confirm){
+            return;
+        }
         axios
             .post(route('Update_Request_Field'), { id_request, field, field_value })
             .then((response) => {
@@ -64,6 +71,10 @@ export default function Dashboard({ auth ,allTemplate , userRequests ,needApprov
     const handleReject = (id_request)=>() => {
         const field = auth.user.id === 36 ? 'fully_accept' : 'status';
         const field_value = 2;
+        let confirm = confirm("Xác nhận Xóa đề xuất?");
+        if(!confirm){
+            return;
+        }
         axios.post(route('Update_Request_Field'), { id_request,field, field_value })
             .then(response => {
                 // Handle response if needed

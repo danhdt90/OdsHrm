@@ -5,13 +5,12 @@ import TextInput from '@/Components/TextInput';
 import { Head,useForm } from '@inertiajs/react';
 export default function Detail_user({user,allLeaderAdmin, auth}) {
     const updateUser = (e) => {
-      e.preventDefault();
-      let postData = data;
-      if(data.password ===''){
-        const {password,...rest}=data;
-        postData = rest;
-      }
-      post(route('Update_users',{id:user.id}),{
+        e.preventDefault();
+        const updatedData = { ...data };
+        if (!updatedData.password) {
+          delete updatedData.password;
+        }
+        post(route('Update_users', { id: user.id }), updatedData, {
           preserveScroll: true,
           onSuccess: () => {
             console.log('ok');

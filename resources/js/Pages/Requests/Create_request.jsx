@@ -1,19 +1,16 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, Link } from '@inertiajs/react';
 import PrimaryButton from "@/Components/PrimaryButton";
-import Modal from "@/Components/Modal";
-import { useState } from 'react';
 import NumberInput from '@/Components/NumberInput';
 import DangerButton from '@/Components/DangerButton';
 import axios from 'axios';
-export default function Create_request({ auth ,inputDetailRequests,allLeaderAdmin,id_template,templateName,userList,request_template }) {
+export default function Create_request({ auth ,inputDetailRequests,id_template,userList,request_template }) {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
             const formData = new FormData(e.target);
             await axios.post(route('Create_User_Request'), formData);
-            window.location.href = route('dashboard');
-
+            alert("Tạo mới đề xuất thành công");
         } catch (error) {
             console.error(error);
         }
@@ -43,18 +40,15 @@ export default function Create_request({ auth ,inputDetailRequests,allLeaderAdmi
                                 {
                                    inputDetailRequests.map((input, index) =>
                                         input.input_type === 'select' ? (
-                                            /**
-                                             * Nếu là Select input
-                                             */
 
                                             <div className="my-6" key={index}>
                                                 <label htmlFor="">{input.input_description}</label>
                                                 <select required={input.required} name={input.input_name} id="" className="block w-full p-2 border border-gray-300 rounded-md">
-                                                    <option value="">Chọn</option>
+                                                    <option>Chọn</option>
                                                     {
-                                                        input.default_value && input.default_value.split(',').map((option) => {
+                                                        input.default_value && input.default_value.split(',').map((option,keyOption) => {
                                                             const trimmedOption = option.trim();
-                                                            return <option value={trimmedOption}>{option}</option>
+                                                            return <option key={keyOption} value={trimmedOption}>{option}</option>
                                                         })
                                                     }
                                                 </select>
@@ -102,9 +96,8 @@ export default function Create_request({ auth ,inputDetailRequests,allLeaderAdmi
                                         /** Nếu là input number */
                                         (input.input_type === 'number') ? (
                                             <div className="my-6" key={index}>
-                                                <label htmlFor="">{input.input_description}</label>
-                             
-                                                <NumberInput name={input.input_name}></NumberInput>
+                                                <label>{input.input_description}</label>
+                                                <NumberInput name={input.input_name} valueInput={input.input_value}></NumberInput>
                                             </div>
                                         ) :
                                         // Nếu là input thông thường
