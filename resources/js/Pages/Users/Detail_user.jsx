@@ -7,9 +7,11 @@ export default function Detail_user({user,allLeaderAdmin, auth}) {
     const updateUser = (e) => {
         e.preventDefault();
         const updatedData = { ...data };
-        if (!updatedData.password) {
+        // console.log(updatedData);
+        if (updatedData.password=='') {
           delete updatedData.password;
         }
+        console.log(updatedData);
         post(route('Update_users', { id: user.id }), updatedData, {
           preserveScroll: true,
           onSuccess: () => {
@@ -24,14 +26,14 @@ export default function Detail_user({user,allLeaderAdmin, auth}) {
       data, setData, errors, post, reset, processing ,progress
     } =
     useForm({
-      name: user.name,
-      avatar: user.avatar,
-      email: user.email,
-      birthday: user.birthday,
-      password: '',
-      phone: user.phone,
-      direct_manager: user.direct_manager,
-      role:user.role
+    name: user.name || '',
+    avatar: user.avatar || '',
+    email: user.email || '',
+    birthday: user.birthday || '',
+    password: '',
+    phone: user.phone || '',
+    direct_manager: user.direct_manager || '',
+    role: user.role || ''
     });
     return (
         <AuthenticatedLayout

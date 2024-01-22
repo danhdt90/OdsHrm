@@ -51,11 +51,12 @@ class UserController extends Controller
             'phone' => $request->phone,
             'role' => $request->role,
             'direct_manager'=> $request->direct_manager,
-            'password' => Hash::make($request->password),
         ]);
-
-        $user->save();
-
+        if ($request->password!==null) {
+            $user->update([
+                'password' => Hash::make($request->password),
+            ]);
+        }
         return redirect()->route('Detail_users', $user->id);
     }
 
