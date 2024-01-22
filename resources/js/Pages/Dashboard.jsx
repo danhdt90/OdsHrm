@@ -35,27 +35,21 @@ export default function Dashboard({ auth ,allTemplate , userRequests ,needApprov
         setShowDetailRequestApprover(false);
     }
     const handleDeleteRequest = (id) => {
-        let confirm = confirm("Are you sure to delete this request?");
-        if(!confirm){
+        let isConfirmed = confirm("Xác nhận duyệt đề xuất?");
+        if(!isConfirmed){
             return;
         }
-        return () => {
-            axios.delete(route('Delete_User_Request', id)).then(response => {
-                console.log(response.data);
-                if (response.data.status === true) {
-                    window.location.reload();
-                }
-            });
-        }
+        axios.delete(route('Delete_User_Request', id)).then(response => {
+            console.log(response.data);
+            if (response.data.status === true) {
+                window.location.reload();
+            }
+        });
     }
     const handleApprove = (id_request) => () => {
 
         const field = auth.user.id === 36 ? 'fully_accept' : 'status';
         const field_value = 1;
-        let confirm = confirm("Xác nhận duyệt đề xuất?");
-        if(!confirm){
-            return;
-        }
         axios
             .post(route('Update_Request_Field'), { id_request, field, field_value })
             .then((response) => {
@@ -71,10 +65,6 @@ export default function Dashboard({ auth ,allTemplate , userRequests ,needApprov
     const handleReject = (id_request)=>() => {
         const field = auth.user.id === 36 ? 'fully_accept' : 'status';
         const field_value = 2;
-        let confirm = confirm("Xác nhận Xóa đề xuất?");
-        if(!confirm){
-            return;
-        }
         axios.post(route('Update_Request_Field'), { id_request,field, field_value })
             .then(response => {
                 // Handle response if needed
@@ -185,7 +175,7 @@ export default function Dashboard({ auth ,allTemplate , userRequests ,needApprov
                                                     <td className="border px-4 py-2">{request.created_at}</td>
                                                     <td className="border px-4 py-2">
                                                         <PrimaryButton onClick={()=>{openModalDetailRequest(request.content_request)}} method="get" as="button"  className="block mt-4 text-blue-500 mr-3">Chi tiết</PrimaryButton>
-                                                        <DangerButton onClick={handleDeleteRequest(request.id)}> Xóa Request </DangerButton>
+                                                        <DangerButton onClick={()=>{handleDeleteRequest(request.id)}}> Xóa Request </DangerButton>
                                                     </td>
                                                 </tr>
                                             ))}
