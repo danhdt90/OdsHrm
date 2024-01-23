@@ -46,6 +46,7 @@ class UserRequestController extends Controller
         $userList = User::pluck('name', 'id')->all();
         return Inertia::render('Requests/Create_request', compact('inputDetailRequests','allLeaderAdmin','id_template','userList','request_template'));
     }
+
     public function update_request_screen(Request $request)
     {
         $id = $request->id;
@@ -123,6 +124,38 @@ class UserRequestController extends Controller
             }
         }
         return response()->json(['status' => true]);
+    }
+    public function update(Request $request){
+        $requestAll = $request->all();
+        $id_request = $requestAll['id'];
+        $requestDetail = UserRequests::find($id_request);
+
+        $requestName = $requestAll['request_name'];
+        unset($requestAll['request_name']);
+                // Xử lý file
+        $uploadedFiles = [];
+        if ($request->allFiles()) {
+            $allFiles = $request->allFiles();
+            foreach ($allFiles as $name_input => $file) {
+                $fileName = $file->getClientOriginalName();
+                $path = $file->store('public/files');
+
+                $requestAll[$name_input] = [
+                    'file_name' => $fileName,
+                    'file_path' => Storage::url($path),
+                ];
+            }
+        }
+        $json_data = json_encode($requestAll, JSON_UNESCAPED_UNICODE);
+        // Lưu vào cơ sở dữ liệu
+
+            $requestDetail->update([
+                'request_name' => $requestName,
+                'content_request' => $json_data,
+            ]);
+
+            return response()->json(['status' => true]);
+
     }
     public function delete(Request $request)
     {

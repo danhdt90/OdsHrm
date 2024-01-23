@@ -4,13 +4,18 @@ import PrimaryButton from "@/Components/PrimaryButton";
 import NumberInput from '@/Components/NumberInput';
 import DangerButton from '@/Components/DangerButton';
 import axios from 'axios';
+
 export default function Create_request({ auth ,inputDetailRequests,id_template,userList,request_template }) {
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
             const formData = new FormData(e.target);
             await axios.post(route('Create_User_Request'), formData);
             alert("Tạo mới đề xuất thành công");
+
+            // Redirect to the "dashboard" route
+
         } catch (error) {
             console.error(error);
         }
