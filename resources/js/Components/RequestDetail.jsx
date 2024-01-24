@@ -16,8 +16,8 @@ const RequestDetail = ({auth, requestDetailData, flowApprover, statusApprover, u
     }
 }
   return (
-    <div className='p-8'>
-        <div className="flex-1 bg-white rounded-lg mt-4">
+    <div className='p-8 flex'>
+        <div className="w-1/6 flex-1 bg-white rounded-lg mt-4">
             <h4 className="text-xl text-gray-900 font-bold mb-4">Thứ tự duyệt</h4>
             <div className="relative px-4">
                 <div>
@@ -25,9 +25,34 @@ const RequestDetail = ({auth, requestDetailData, flowApprover, statusApprover, u
                     {flowApprover.map((approver, index) => (
                         <div key={index}>
                             <div className="flex items-center w-full my-6 -ml-1.5">
-                                <div className="w-1/12 z-10">
-                                    <div className="w-3.5 h-3.5 bg-green-600 rounded-full">
-                                    </div>
+                                <div className="w-1/12 z-10 mr-2">
+                                        {approver.user_id === "qltt" ?
+                                            statusApprover.status === 1 ?
+                                            <div className="w-3.5 h-3.5 bg-blue-600 rounded-full">
+                                            </div> :
+                                            statusApprover.status === 2 ? <div className="w-3.5 h-3.5 bg-red-600 rounded-full">
+                                            </div> :
+                                            <div className="w-3.5 h-3.5 bg-yellow-600 rounded-full">
+                                            </div> :
+                                        approver.user_id === "hr" ?
+                                            statusApprover.hr_status === 1 ?
+                                            <div className="w-3.5 h-3.5 bg-blue-600 rounded-full">
+                                            </div> :
+                                            statusApprover.hr_status === 2 ? <div className="w-3.5 h-3.5 bg-red-600 rounded-full">
+                                            </div> :
+                                            <div className="w-3.5 h-3.5 bg-yellow-600 rounded-full">
+                                            </div> :
+                                        approver.user_id === "ceo" ?
+                                            statusApprover.fully_accept === 1 ?
+                                            <div className="w-3.5 h-3.5 bg-blue-600 rounded-full">
+                                            </div> :
+                                            statusApprover.fully_accept === 2 ? <div className="w-3.5 h-3.5 bg-red-600 rounded-full">
+                                            </div> :
+                                            <div className="w-3.5 h-3.5 bg-yellow-600 rounded-full">
+                                            </div> :""
+                                            }
+                                    {/* <div className="w-3.5 h-3.5 bg-green-600 rounded-full">
+                                    </div> */}
                                 </div>
                                 <div className="w-11/12">
                                     <p className="text-sm">
@@ -54,51 +79,54 @@ const RequestDetail = ({auth, requestDetailData, flowApprover, statusApprover, u
                 </div>
             </div>
         </div>
-        <table className='w-full border'>
-            <thead>
-                <tr>
-                    <th className="px-4 py-2">Tên trường</th>
-                    <th className="px-4 py-2">Giá trị</th>
-                </tr>
-            </thead>
-            <tbody>
-                {Object.entries(jsonObject).map(([key, value]) => (
-                    <tr key={key}>
-                    {console.log(jsonObject)}
-
-                        <td className='font-bold border p-2'>
-                            {
-                                key=="follower"?
-                                "Quản lý trực tiếp:":
-                                key=="id_user"?
-                                "Người tạo":
-                                key=="id_template"?
-                                null:
-                                key=="request_name"?
-                                "Tiêu đề":
-                                inputDetailRequests.find(input => input.input_name === key)?.input_description
-                            }
-                        </td>
-                        <td className='m-3 border p-2'>
-                            {
-                                key=="follower"?
-                                userList[value]:
-                                key=="id_user"?
-                                userList[value]:
-                                key=="id_template"?
-                                null:
-                                typeof value === 'object'?
-                                <a className='text-green-500 font-bold' href={value.file_path} download>
-                                    Tải file
-                                </a>:value
-                            }
-
-                        </td>
+        <div class="w-5/6">
+            <h4 className="text-xl text-gray-900 font-bold mb-4">Nội dung request</h4>
+            <table className='w-full border'>
+                <thead>
+                    <tr>
+                        <th className="px-4 py-2">Tên trường</th>
+                        <th className="px-4 py-2">Giá trị</th>
                     </tr>
-                ))}
+                </thead>
+                <tbody>
+                    {Object.entries(jsonObject).map(([key, value]) => (
+                        <tr key={key}>
+                        {console.log(jsonObject)}
 
-            </tbody>
-        </table>
+                            <td className='font-bold border p-2'>
+                                {
+                                    key=="follower"?
+                                    "Quản lý trực tiếp:":
+                                    key=="id_user"?
+                                    "Người tạo":
+                                    key=="id_template"?
+                                    null:
+                                    key=="request_name"?
+                                    "Tiêu đề":
+                                    inputDetailRequests.find(input => input.input_name === key)?.input_description
+                                }
+                            </td>
+                            <td className='m-3 border p-2'>
+                                {
+                                    key=="follower"?
+                                    userList[value]:
+                                    key=="id_user"?
+                                    userList[value]:
+                                    key=="id_template"?
+                                    null:
+                                    typeof value === 'object'?
+                                    <a className='text-green-500 font-bold' href={value.file_path} download>
+                                        Tải file
+                                    </a>:value
+                                }
+
+                            </td>
+                        </tr>
+                    ))}
+
+                </tbody>
+            </table>
+        </div>
 
     </div>
   );
