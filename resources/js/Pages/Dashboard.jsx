@@ -5,6 +5,7 @@ import Modal from "@/Components/Modal";
 import { useState } from 'react';
 import DangerButton from '@/Components/DangerButton';
 import SecondaryButton from '@/Components/SecondaryButton';
+import RequestDetail from '@/Components/RequestDetail';
 export default function Dashboard({ auth ,allTemplate , userRequests ,needApprove, inputDetailRequests, userList}) {
     const [showModalNewRequest, setShowModalNewRequest] = useState(false);
     const openModal = () => {
@@ -15,8 +16,15 @@ export default function Dashboard({ auth ,allTemplate , userRequests ,needApprov
     }
     const [showModalDetailRequest, setShowModalDetailRequest] = useState(false);
     const [requestDetailData, setRequestDetailData] = useState(null);
-    const openModalDetailRequest = (request,id_request) => {
+    // {openModalDetailRequest(request.flow_of_approvers,request.content_request)}}
+    const [flowApprover,setFlowApprover] = useState([]);
+    const openModalDetailRequest = (flow_of_approvers,request) => {
         setRequestDetailData(request);
+        // console.log(flow_of_approvers);
+        if(typeof(flow_of_approvers)==='string'){
+            flow_of_approvers = JSON.parse(flow_of_approvers);
+            setFlowApprover(flow_of_approvers);
+        };
         setShowModalDetailRequest(true);
     }
     const closeModalDetailRequest = () => {
@@ -175,9 +183,9 @@ export default function Dashboard({ auth ,allTemplate , userRequests ,needApprov
                                                     </td>
                                                     <td className="border px-4 py-2">{request.created_at}</td>
                                                     <td className="border px-4 py-2">
-
-                                                        <div class="flex divide-x divide-blue-600 row">
-                                                        <PrimaryButton onClick={()=>{openModalDetailRequest(request.content_request)}} method="get" as="button"  className="block text-blue-500 mr-3">Chi tiết</PrimaryButton>
+                                                        {console.log(request)};
+                                                        <div className="flex divide-x divide-blue-600 row">
+                                                        <PrimaryButton onClick={()=>{openModalDetailRequest(request.flow_of_approvers,request.content_request)}} method="get" as="button"  className="block text-blue-500 mr-3">Chi tiết</PrimaryButton>
                                                         <Link href={ route('Edit_Detail_Screen',{id:request.id})} className="inline-flex items-center px-4 py-2 mr-3 bg-white border-solid border-radius rounded">Sửa</Link>
                                                         <DangerButton onClick={()=>{handleDeleteRequest(request.id)}}> Xóa Request </DangerButton>
                                                         </div>
@@ -221,7 +229,7 @@ export default function Dashboard({ auth ,allTemplate , userRequests ,needApprov
                                                                             "Người tạo":
                                                                             key=="id_template"?
                                                                             "Loại đề xuất":
-                                                                            inputDetailRequests[key]
+                                                                            ""
                                                                         }
                                                                     </td>
                                                                     <td className='border p-3'>
@@ -255,53 +263,8 @@ export default function Dashboard({ auth ,allTemplate , userRequests ,needApprov
                                 </div>
                             </Modal>
                             <Modal show={showModalDetailRequest} onClose={closeModalDetailRequest}>
-                                <div className="p-6">
-                                    <h2 className="font-bold">Nội dung Request</h2>
-                                    <hr />
-                                    <div className='p-2'>
-                                        {requestDetailData && (() => {
-                                            const jsonObject = JSON.parse(requestDetailData);
-                                            return (
-                                                <div>
-                                                    <table className="w-full border">
-                                                        <tbody>
-                                                            {Object.entries(jsonObject).map(([key, value]) => (
-                                                                <tr key={key}>
-                                                                    <td className='font-bold border p-2'>
-                                                                        {
-                                                                            key=="follower"?
-                                                                            "Quản lý trực tiếp:":
-                                                                            key=="id_user"?
-                                                                            "Người tạo":
-                                                                            key=="id_template"?
-                                                                            "Loại đề xuất":
-                                                                            inputDetailRequests[key]
-                                                                        }
-                                                                    </td>
-                                                                    <td className='border p-2'>
-                                                                        {
-                                                                            key=="follower"?
-                                                                            userList[value]:
-                                                                            key=="id_user"?
-                                                                            userList[value]:
-                                                                            key=="id_template"?
-                                                                            value:
-                                                                            typeof value === 'object'?
-                                                                            <a className='text-green-500' href={value.file_path} download>
-                                                                                Tải file
-                                                                            </a>:value
-                                                                        }
-                                                                    </td>
-                                                                </tr>
-                                                            ))}
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-                                            );
-                                        })()}
-                                    </div>
+                                <RequestDetail auth={auth} requestDetailData={requestDetailData} flowApprover={flowApprover} userList={userList} inputDetailRequests={inputDetailRequests}/>
 
-                                </div>
                             </Modal>
                         </div>
                     </div>

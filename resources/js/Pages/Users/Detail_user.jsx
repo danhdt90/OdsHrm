@@ -11,7 +11,6 @@ export default function Detail_user({user,allLeaderAdmin, auth}) {
         if (updatedData.password=='') {
           delete updatedData.password;
         }
-        console.log(updatedData);
         post(route('Update_users', { id: user.id }), updatedData, {
           preserveScroll: true,
           onSuccess: () => {

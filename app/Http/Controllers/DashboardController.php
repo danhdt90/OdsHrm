@@ -23,7 +23,7 @@ class DashboardController extends Controller
 
         $userList = User::pluck('name', 'id')->all();
         $allTemplate = RequestTemplate::all();
-        $inputDetailRequests = InputDetailRequest::pluck('input_description', 'input_name')->all();
+        $inputDetailRequests = InputDetailRequest::get(['input_description', 'input_name', 'input_type']);
         $memberUser = User::where('direct_manager', $userId)->get();
         // Get requests for the members of the current user
         $memberUserIds = $memberUser->pluck('id')->toArray();
@@ -33,7 +33,7 @@ class DashboardController extends Controller
             ->where('fully_accept', '<>', 2)
             ->join('users', 'users.id', '=', 'user_requests.id_user')
             ->join('request_templates', 'user_requests.request_template', '=', 'request_templates.id')
-            ->select('user_requests.*', 'request_templates.template_name','users.name as user_name')
+            ->select('user_requests.*', 'request_templates.template_name','users.name as user_name','request_templates.flow_of_approvers')
             ->get();
         if($userId==36){// Dành cho các request mà các qltt đã duyệt cần sếp duyệt
             $needFullyAccept = UserRequests::where('status', 1)
