@@ -134,7 +134,7 @@ return (
                             </div>
                             <div className="mt-6">
                                 <select value={data.role} required className="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" onChange={(e) => setData('role', e.target.value)}>
-                                    <option selected disabled>Pick role</option>
+                                    <option defaultValue>Pick role</option>
                                     <option value="0">Member</option>
                                     <option value="1">Leader</option>
                                     <option value="99">Admin</option>
@@ -182,7 +182,7 @@ return (
                                                 <span
                                                 className="whitespace-nowrap rounded-full bg-purple-100 px-2.5 py-0.5 text-sm text-purple-700"
                                                 > Leader</span>
-                                                :user.role == 0?
+                                                :user.role == null?
                                                 <span className="whitespace-nowrap rounded-full bg-black px-2.5 py-0.5 text-sm text-white"
                                                 >  Member</span>
                                                 :user.role == 99?
@@ -198,10 +198,10 @@ return (
                                     <td>
                                         <p className="">
                                             {
-                                                (user.directManager )?
+                                                (user.direct_manager )?
                                                 <span
                                                 className="whitespace-nowrap rounded-full bg-purple-100 px-2.5 py-0.5 text-sm text-purple-700"
-                                                > {user.directManager }</span>
+                                                > {user.direct_manager.name }</span>
                                                 :'Unknown'
                                             }
                                         </p>

@@ -16,9 +16,8 @@ class UserController extends Controller
     {
         // Retrieve all users from database
         $users = User::with('directManager')->get();
-
         // Return view with users data
-        return Inertia::render('Users/Users', ['users' => $users]);
+        return Inertia::render('Users/Users', ['users' => $users ]);
     }
 
     public function view($id)

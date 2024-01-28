@@ -68,7 +68,7 @@ const RequestDetail = ({auth, requestDetailData, flowApprover, statusApprover, u
                 </div>
             </div>
         </div>
-        <div class="w-5/6" style={{ maxHeight: '100vh', overflow: 'auto' }}>
+        <div className="w-5/6" style={{ maxHeight: '100vh', overflow: 'auto' }}>
             <h4 className="text-xl text-gray-900 font-bold mb-4">Nội dung request</h4>
             <table className='w-full border'>
                 <thead>
@@ -96,7 +96,7 @@ const RequestDetail = ({auth, requestDetailData, flowApprover, statusApprover, u
                             </td>
                             <td className='m-3 border p-2'>
                                 {
-                                    key=="follower"?
+                                    key=="follower"||key=="id_user"?
                                     userList[value]:
                                     key=="id_template"?
                                     null:

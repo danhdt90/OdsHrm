@@ -110,7 +110,7 @@ export default function Edit_request({ auth ,inputDetailRequests,id_template,tem
                                             <div className="my-6" key={index}>
                                                 <label htmlFor="">{input.input_description}</label>
                                                 <NumberInput
-                                                value={values[input.input_name]!== null ? values[input.input_name] : ""}
+                                                valueInput={values[input.input_name]!== null ? values[input.input_name] : ""}
                                                 name={input.input_name}></NumberInput>
                                             </div>
                                         ) :

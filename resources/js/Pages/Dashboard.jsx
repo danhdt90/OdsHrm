@@ -183,7 +183,6 @@ export default function Dashboard({ auth ,allTemplate , userRequests ,needApprov
                                                     </td>
                                                     <td className="border px-4 py-2">{request.created_at}</td>
                                                     <td className="border px-4 py-2">
-                                                        {console.log(request)};
                                                         <div className="flex divide-x divide-blue-600 row">
                                                         <PrimaryButton onClick={()=>{openModalDetailRequest(request.flow_of_approvers,request.content_request)}} method="get" as="button"  className="block text-blue-500 mr-3">Chi tiết</PrimaryButton>
                                                         <Link href={ route('Edit_Detail_Screen',{id:request.id})} className="inline-flex items-center px-4 py-2 mr-3 bg-white border-solid border-radius rounded">Sửa</Link>
