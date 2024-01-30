@@ -20,6 +20,7 @@ export default function Edit_request({ auth ,inputDetailRequests,id_template,tem
     function handleChange(e) {
         const key = e.target.id;
         const value = e.target.value
+        console.log(key,value,values)
         setValues(values => ({
             ...values,
             [key]: value
@@ -68,12 +69,12 @@ export default function Edit_request({ auth ,inputDetailRequests,id_template,tem
                                              */
                                             <div className="my-6" key={index}>
                                                 <label htmlFor="">{input.input_description}</label>
-                                                <select onChange={handleChange} value={values[input.input_name]!== null ? values[input.input_name] : ""} required={input.required} name={input.input_name} id="" className="block w-full p-2 border border-gray-300 rounded-md">
+                                                <select onChange={handleChange} value={values[input.input_name]!== null ? values[input.input_name] : ""} required={input.required} name={input.input_name} id={input.input_name} className="block w-full p-2 border border-gray-300 rounded-md">
                                                     <option>Chọn</option>
                                                     {
-                                                        input.default_value && input.default_value.split(',').map((option) => {
+                                                        input.default_value && input.default_value.split(',').map((option,keyOption) => {
                                                             const trimmedOption = option.trim();
-                                                            return <option value={trimmedOption}>{option}</option>
+                                                            return <option key={keyOption} value={trimmedOption}>{option}</option>
                                                         })
                                                     }
                                                 </select>

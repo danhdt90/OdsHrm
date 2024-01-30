@@ -228,7 +228,7 @@ export default function Dashboard({ auth ,allTemplate , userRequests ,needApprov
                                                                             "Người tạo":
                                                                             key=="id_template"?
                                                                             "Loại đề xuất":
-                                                                            ""
+                                                                            inputDetailRequests.find(input => input.input_name === key)?.input_description
                                                                         }
                                                                     </td>
                                                                     <td className='border p-3'>

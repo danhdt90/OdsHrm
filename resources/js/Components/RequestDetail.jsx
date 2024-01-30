@@ -1,4 +1,6 @@
 import React from 'react';
+import CommentSection from './CommentSection';
+
 const RequestDetail = ({auth, requestDetailData, flowApprover, statusApprover, userList, inputDetailRequests }) => {
   if (!requestDetailData) {
     return null;
@@ -17,39 +19,39 @@ const RequestDetail = ({auth, requestDetailData, flowApprover, statusApprover, u
 }
     const renderStatus = (approver, statusApprover) => {
 
-    let color, title, statusText;
-    switch (approver.user_id) {
-        case "qltt":
-            color = statusApprover.status === 1 ? "bg-green-600" : statusApprover.status === 2 ? "bg-red-600" : "bg-yellow-600";
-            title = "Quản lý trực tiếp";
-            statusText = statusApprover.status === 1 ? "Đã duyệt" : statusApprover.status === 2 ? "Từ chối" : "Chờ duyệt";
-            break;
-        case "hr":
-            color = statusApprover.hr_status === 1 ? "bg-green-600" : statusApprover.hr_status === 2 ? "bg-red-600" : "bg-yellow-600";
-            title = "HR Manager";
-            statusText = statusApprover.hr_status === 1 ? "Đã duyệt" : statusApprover.hr_status === 2 ? "Từ chối" : "Chờ duyệt";
-            break;
-        case "ceo":
-            color = statusApprover.fully_accept === 1 ? "bg-green-600" : statusApprover.fully_accept === 2 ? "bg-red-600" : "bg-yellow-600";
-            title = "CEO";
-            statusText = statusApprover.fully_accept === 1 ? "Đã duyệt" : statusApprover.fully_accept === 2 ? "Từ chối" : "Chờ duyệt";
-            break;
-        default:
-            color = 'bg-yellow-600';
-            title = approver.user_id;
-            statusText = "";
-    }
-    return (
-        <div className="flex items-center w-full my-4 -ml-1.5">
-            <div className="w-1/12 z-10 mr-2">
-                <div className={`w-3.5 h-3.5 ${color} rounded-full`}></div>
+        let color, title, statusText;
+        switch (approver.user_id) {
+            case "qltt":
+                color = statusApprover.status === 1 ? "bg-green-600" : statusApprover.status === 2 ? "bg-red-600" : "bg-yellow-600";
+                title = "Quản lý trực tiếp";
+                statusText = statusApprover.status === 1 ? "Đã duyệt" : statusApprover.status === 2 ? "Từ chối" : "Chờ duyệt";
+                break;
+            case "hr":
+                color = statusApprover.hr_status === 1 ? "bg-green-600" : statusApprover.hr_status === 2 ? "bg-red-600" : "bg-yellow-600";
+                title = "HR Manager";
+                statusText = statusApprover.hr_status === 1 ? "Đã duyệt" : statusApprover.hr_status === 2 ? "Từ chối" : "Chờ duyệt";
+                break;
+            case "ceo":
+                color = statusApprover.fully_accept === 1 ? "bg-green-600" : statusApprover.fully_accept === 2 ? "bg-red-600" : "bg-yellow-600";
+                title = "CEO";
+                statusText = statusApprover.fully_accept === 1 ? "Đã duyệt" : statusApprover.fully_accept === 2 ? "Từ chối" : "Chờ duyệt";
+                break;
+            default:
+                color = 'bg-yellow-600';
+                title = approver.user_id;
+                statusText = "";
+        }
+        return (
+            <div className="flex items-center w-full my-4 -ml-1.5">
+                <div className="w-1/12 z-10 mr-2">
+                    <div className={`w-3.5 h-3.5 ${color} rounded-full`}></div>
+                </div>
+                <div className="w-11/12">
+                    <p className="text-sm">{title}</p>
+                    <p className="text-xs text-gray-500">{statusText}</p>
+                </div>
             </div>
-            <div className="w-11/12">
-                <p className="text-sm">{title}</p>
-                <p className="text-xs text-gray-500">{statusText}</p>
-            </div>
-        </div>
-    );
+        );
     };
     return (
     <div className='p-8 flex'>
@@ -112,6 +114,7 @@ const RequestDetail = ({auth, requestDetailData, flowApprover, statusApprover, u
 
                 </tbody>
             </table>
+            {/* <CommentSection /> */}
         </div>
 
     </div>
