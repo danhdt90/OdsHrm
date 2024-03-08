@@ -5,17 +5,17 @@ function NumberInput({ name, valueInput }) {
 
     const handleChange = (event) => {
         let value = event.target.value;
-        value = value.replace(/[^0-9,]/g, ""); // remove all non-digit and non-comma characters
+        value = value.replace(/\./g, "");
 
-        if (value !== "" && !isNaN(value.replace(/,/g, "")) && parseFloat(value.replace(/,/g, "")) > 0) {
-            value = parseInt(value.replace(/,/g, "")).toLocaleString("de-DE"); // convert to string with commas
-        } else {
-            value = "";
+        if (!isNaN(value) && value.trim() !== "") {
+            value = parseInt(value).toLocaleString("de-DE"); // convert to string with commas
         }
         setValue(value);
     };
-    const handleBlur = () => {
-        let newValue = value.replace(/,/g, "");
+    const handleBlur = (event) => {
+        let value = event.target.value;
+        let newValue = value.replace(/[,a-zA-Zàáảãạăắằẳẵặâấầẩẫậđèéẻẽẹêếềểễệìíỉĩịòóỏõọôốồổỗộơớờởỡợùúủũụưứừửữựỳýỷỹỵ]/g, "");
+        newValue = newValue.replace(/\./g, "");
         newValue = parseFloat(newValue);
         newValue = newValue.toLocaleString('de-DE');
         setValue(newValue);

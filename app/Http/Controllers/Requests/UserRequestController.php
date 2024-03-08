@@ -41,7 +41,7 @@ class UserRequestController extends Controller
         $id_template = $request->id_template;
         $request_template = RequestTemplate::find($id_template);
         // $inputDetails = InputDetailRequest::find($id_template);
-        $inputDetailRequests = InputDetailRequest::where('id_request_templates', $id_template)->get();
+        $inputDetailRequests = InputDetailRequest::where('id_request_templates', $id_template)->get()->sortBy('priority')->values();;
         $allLeaderAdmin = User::whereIn('role', ['1', '99'])->get();
         $userList = User::pluck('name', 'id')->all();
         return Inertia::render('Requests/Create_request', compact('inputDetailRequests','allLeaderAdmin','id_template','userList','request_template'));
