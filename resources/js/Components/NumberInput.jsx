@@ -12,7 +12,14 @@ function NumberInput({ name, valueInput }) {
         }
         setValue(value);
     };
-
+    const handleBlur = (event) => {
+        let value = event.target.value;
+        let newValue = value.replace(/[,a-zA-Zàáảãạăắằẳẵặâấầẩẫậđèéẻẽẹêếềểễệìíỉĩịòóỏõọôốồổỗộơớờởỡợùúủũụưứừửữựỳýỷỹỵ]/g, "");
+        newValue = newValue.replace(/\./g, "");
+        newValue = parseFloat(newValue);
+        newValue = newValue.toLocaleString('de-DE');
+        setValue(newValue);
+    };
     return (
         <input
             name={name}
@@ -20,6 +27,7 @@ function NumberInput({ name, valueInput }) {
             className="block w-full p-2 border border-gray-300 rounded-md"
             type="text"
             onChange={handleChange}
+            onBlur={handleBlur}
         />
     );
 }

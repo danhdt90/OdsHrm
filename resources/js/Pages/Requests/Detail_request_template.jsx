@@ -208,6 +208,7 @@ export default function Detail_template_request({ auth,template, inputDetails ,a
                             <th className="px-4 py-2">Type</th>
                             <th className="px-4 py-2">Description</th>
                             <th className="px-4 py-2">Required</th>
+                            <th className="px-4 py-2">Priority</th>
                             <th className="px-4 py-2">Action</th>
                           </tr>
                         </thead>
@@ -226,6 +227,7 @@ export default function Detail_template_request({ auth,template, inputDetails ,a
                               <td className="border px-4 py-2">
                                 {(input.required)?'Bắt buộc' : 'Không bắt buộc'}
                               </td>
+                              <td className="border px-4 py-2"> {input.priority}</td>
                               <td className="border px-4 py-2">
                                 <button onClick={ ()=>openModalEditInputDetail(input)} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Edit</button>
                                 <Link as='button' method='POST' href={route('Delete_input_detail',{id:template.id,input_id:input.id})} className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded ml-2">Delete</Link>
